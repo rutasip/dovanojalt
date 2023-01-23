@@ -57,16 +57,16 @@ const Navbars = () => {
   return (
     <div>
       <Login show={showModal} onHide={() => setShowModal(false)} />
-      <header id="top-navbar" className="border bg-white">
+      <header id="top-navbar" className="bg-white shadow-sm">
         <Navbar
           className="justify-content-between mx-auto"
-          style={{ maxWidth: "1280px" }}
+          style={{ maxWidth: "1280px", paddingRight: "0.75rem" }}
         >
           <Nav.Link as={Link} to="/" className="logo-img-text">
             <img src={logoImg} alt="logo" height="16"></img>
           </Nav.Link>
 
-          <div className="search-bar border shadow-sm d-flex">
+          <div className="search-bar shadow-sm d-flex">
             <LocationSelector
               isClearable
               onChange={onLocationChange}
@@ -113,8 +113,8 @@ const Navbars = () => {
                 {/* <Nav.Link as={Link} to="/prisijungti"> */}
                 <Nav.Link>
                   <Button
-                    className="btn"
-                    variant="outline-secondary font-weight-bolder"
+                    className="btn font-weight-bolder shadow-sm"
+                    variant="outline-light"
                     onClick={() => setShowModal(true)}
                   >
                     Registruotis | Prisijungti
@@ -128,7 +128,10 @@ const Navbars = () => {
               </>
             )}
             <Nav.Link>
-              <Button className="btn font-weight-bolder" variant="primary">
+              <Button
+                className="btn font-weight-bolder shadow-sm"
+                variant="primary"
+              >
                 Įkelti skelbimą
               </Button>
             </Nav.Link>

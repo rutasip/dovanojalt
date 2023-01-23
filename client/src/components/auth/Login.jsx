@@ -1,9 +1,11 @@
 import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
-import { Form, FloatingLabel, Button, Modal } from "react-bootstrap";
+import { Form, Button, Modal } from "react-bootstrap";
 import Axios from "axios";
 import ErrorMsg from "./ErrorMsg";
 import UserContext from "../../context/UserContext";
+import facebookImg from "../../assets/icons8-facebook.svg";
+import googleImg from "../../assets/icons8-google.svg";
 
 const Login = (props) => {
   const [email, setEmail] = useState();
@@ -31,8 +33,37 @@ const Login = (props) => {
   };
 
   return (
-    <Modal className="d-flex align-items-center" {...props}>
+    <Modal centered className="d-flex" {...props}>
+      <Modal.Header closeButton>
+        <Modal.Title className="h5">Prisijungti</Modal.Title>
+      </Modal.Header>
       <Modal.Body className="align-self-center" style={{ width: "420px" }}>
+        <div className="text-center">
+          {/* <h5 className="mb-4">Prisijungti</h5> */}
+          <div className="d-inline-flex mt-3 mb-4">
+            <div className="rounded shadow-md py-2 px-4 me-2">
+              <img src={facebookImg} alt="logo" width="24"></img>
+              <span
+                className="text-secondary ps-1"
+                style={{ fontSize: "12px", fontWeight: "600" }}
+              >
+                Facebook
+              </span>
+            </div>
+            <div className="rounded shadow-md py-2 px-4">
+              <img src={googleImg} alt="logo" width="24"></img>
+              <span
+                className="text-secondary ps-1"
+                style={{ fontSize: "12px", fontWeight: "600" }}
+              >
+                Google
+              </span>
+            </div>
+          </div>
+          <p className="text-secondary mb-4" style={{ fontSize: "14px" }}>
+            Arba prisijunk su el. paštu
+          </p>
+        </div>
         <Form onSubmit={submit}>
           {error && (
             <ErrorMsg
@@ -51,6 +82,7 @@ const Login = (props) => {
             onChange={(e) => {
               setEmail(e.target.value);
             }}
+            autoFocus
           />
           <Form.Control
             type="password"
@@ -64,7 +96,7 @@ const Login = (props) => {
 
           <Button
             variant="primary"
-            className="btn font-weight-bolder"
+            className="btn font-weight-bolder shadow-sm"
             type="submit"
             onClick={submit}
             block
@@ -80,7 +112,7 @@ const Login = (props) => {
           </p>
           <Button
             variant="dark"
-            className="btn font-weight-bolder"
+            className="btn font-weight-bolder shadow-sm"
             type="submit"
             onClick={submit}
             block

@@ -6,6 +6,7 @@ $accent-color: #1a73e8;
 $accent-color-light: #84a4fc;
 $secondary-color: #212329;
 $secondary-color-light: #ccd0d8;
+$search-field-gray: #f4f4f5;
 
 body {
   margin: 0;
@@ -278,18 +279,17 @@ div.listing-cover-photo {
   }
 }
 
-.btn-outline-secondary {
-  border-color: #dee2e6;
+.btn-outline-light {
   color: $accent-color;
 }
 
 .search-bar {
   border-radius: 1rem;
+  background-color: $search-field-gray;
 
   .location-selector,
   .category-selector {
     font-size: 14px;
-    border-right: 1px solid #dee2e6;
 
     div[class$="control"] {
       border: none;
@@ -301,8 +301,9 @@ div.listing-cover-photo {
 
     .select__control {
       cursor: pointer;
-      min-height: 34px;
+      min-height: 35px;
       border-radius: 1rem;
+      background-color: $search-field-gray;
 
       svg {
         height: 16px;
@@ -327,8 +328,9 @@ div.listing-cover-photo {
     min-width: 180px;
   }
 
-  input {
+  input, input:focus {
     min-width: 140px !important;
+    background-color: $search-field-gray;
   }
 
   .btn {
@@ -424,4 +426,8 @@ div.listing-cover-photo {
   height: 1px;
   position: relative;
   vertical-align: middle;
+}
+
+.shadow-md {
+  box-shadow: rgba(50, 50, 93, 0.1) 0 4px 6px 0, rgba(0, 0, 0, 0.08) 0 1px 3px 0;
 }
