@@ -96,7 +96,7 @@ const Navbars = () => {
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
                 height="16"
-                fill="#8B8E92"
+                fill="#727272"
                 className="bi bi-search"
                 viewBox="0 0 16 16"
               >
@@ -107,7 +107,17 @@ const Navbars = () => {
 
           <Nav className="d-flex">
             {userData.user ? (
-              <Avatar logout={logout} />
+              <>
+                <Avatar logout={logout} />
+                <Nav.Link>
+                  <Button
+                    className="btn font-weight-bolder shadow-sm"
+                    variant="primary"
+                  >
+                    Įkelti skelbimą
+                  </Button>
+                </Nav.Link>
+              </>
             ) : (
               <>
                 {/* <Nav.Link as={Link} to="/prisijungti"> */}
@@ -125,16 +135,17 @@ const Navbars = () => {
                     Registruotis
                   </Button>
                 </Nav.Link> */}
+                <Nav.Link>
+                  <Button
+                    className="btn font-weight-bolder shadow-sm"
+                    variant="primary"
+                    onClick={() => setShowModal(true)}
+                  >
+                    Įkelti skelbimą
+                  </Button>
+                </Nav.Link>
               </>
             )}
-            <Nav.Link>
-              <Button
-                className="btn font-weight-bolder shadow-sm"
-                variant="primary"
-              >
-                Įkelti skelbimą
-              </Button>
-            </Nav.Link>
           </Nav>
         </Navbar>
       </header>

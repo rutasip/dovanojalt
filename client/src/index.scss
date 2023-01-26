@@ -317,6 +317,10 @@ div.listing-cover-photo {
       .select__dropdown-indicator {
         padding-right: 6px;
       }
+
+      .select__placeholder {
+        color: #727272;
+      }
     }
   }
 
@@ -430,4 +434,18 @@ div.listing-cover-photo {
 
 .shadow-md {
   box-shadow: rgba(50, 50, 93, 0.1) 0 4px 6px 0, rgba(0, 0, 0, 0.08) 0 1px 3px 0;
+}
+
+.select__placeholder {
+  color: #212529;
+}
+
+#signupForm {
+  .select__value-container {
+    padding-left: 16px;
+  }
+
+  .select__control {
+    border-radius: 0.5rem;
+  }
 }
