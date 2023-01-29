@@ -11,18 +11,13 @@ const Avatar = ({ logout }) => {
       title={
         <Image
           src={userData.loading ? null : `/${userData.user.image.filePath}`}
-          width="30"
-          height="30"
+          width="35"
+          height="35"
           roundedCircle
         />
       }
-      id="nav-dropdown-align-right"
     >
-      <NavDropdown.Item href="/messages">Žinutės</NavDropdown.Item>
-      <NavDropdown.Item href="/users/myitems">Mano skelbimai</NavDropdown.Item>
-      <NavDropdown.Item href="/users/favorites">
-        Įsiminti skelbimai
-      </NavDropdown.Item>
+      <NavDropdown.Item as={Link} to="/users/myitems">Mano skelbimai</NavDropdown.Item>
       <NavDropdown.Item as={Link} to="/users/settings">
         Nustatymai
       </NavDropdown.Item>

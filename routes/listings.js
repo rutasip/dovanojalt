@@ -1,16 +1,18 @@
+/* eslint-disable node/prefer-promises/fs */
 /* eslint-disable consistent-return */
 const router = require("express").Router();
 const multer = require("multer");
 const fs = require("fs");
 const auth = require("../middleware/auth");
 const Listing = require("../models/listing.model");
+const User = require("../models/user.model");
 const { isNullable, isDefined } = require("../utils/null-check");
 
 const storage = multer.diskStorage({
-  destination: (cb) => {
+  destination: (req, file, cb) => {
     cb(null, `${__dirname}/../uploads/`);
   },
-  filename: (file, cb) => {
+  filename: (req, file, cb) => {
     cb(
       null,
       `${Date.now()}-${file.originalname.toLowerCase().split(" ").join("-")}`
@@ -21,7 +23,7 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage,
   // eslint-disable-next-line consistent-return
-  fileFilter: (file, cb) => {
+  fileFilter: (req, file, cb) => {
     if (
       file.mimetype === "image/png" ||
       file.mimetype === "image/jpg" ||
@@ -35,14 +37,14 @@ const upload = multer({
   },
 });
 
-router.post("/", (request, result) => {
-  const location = isNullable(request.body.location)
+router.post("/", (req, res) => {
+  const location = isNullable(req.body.location)
     ? undefined
-    : parseInt(request.body.location, 10);
+    : parseInt(req.body.location, 10);
 
-  const category = isNullable(request.body.category)
+  const category = isNullable(req.body.category)
     ? undefined
-    : parseInt(request.body.category, 10);
+    : parseInt(req.body.category, 10);
 
   const findArgs = {};
 
@@ -54,80 +56,84 @@ router.post("/", (request, result) => {
     findArgs.category = category;
   }
 
-  if (request.body.text) {
-    const regex = new RegExp(request.body.text, "i");
+  if (req.body.text) {
+    const regex = new RegExp(req.body.text, "i");
     findArgs.desc = { $regex: regex };
   }
 
   Listing.find(findArgs)
     .populate("writer")
     .sort("-date")
-    .then((listings) => result.json(listings))
-    .catch((error) => result.status(400).json(`Error: ${error}`));
+    .then((listings) => res.json(listings))
+    .catch((err) => res.status(400).json(`Error: ${err}`));
 });
 
-router.get("/listings-by-user", (request, result) => {
-  const _id = request.query.id;
+router.get("/listings-by-user", (req, res) => {
+  const _id = req.query.id;
 
   Listing.find({ writer: { $in: _id } })
     .populate("writer")
     .sort("-date")
-    .exec((error, listing) => {
-      if (error) return result.status(400).send(error);
-      return result.status(200).send(listing);
+    .exec((err, listing) => {
+      if (err) return res.status(400).send(err);
+      return res.status(200).send(listing);
     });
 });
 
-router.get("/listings-by-id", (request, result) => {
-  const type = request.query.type;
+router.get("/listings-by-id", (req, res) => {
+  const type = req.query.type;
   let id;
 
   if (type === "array") {
-    id = request.query.id.split(",");
+    id = req.query.id.split(",");
   } else {
-    id = request.query.id;
+    id = req.query.id;
   }
 
   Listing.find({ _id: { $in: id } })
     .populate("writer")
     .sort("-date")
-    .exec((error, listing) => {
-      if (error) return result.status(400).send(error);
-      return result.status(200).send(listing);
+    .exec((err, listing) => {
+      if (err) return res.status(400).send(err);
+      return res.status(200).send(listing);
     });
 });
 
-router.post("/add/images", upload.array("images", 6), (request, result) => {
-  if (request.files === null) {
-    return result.status(400).json({ message: "Neįkeltas failas" });
+router.post("/add/images", upload.array("images", 6), (req, res) => {
+  if (req.files === null) {
+    return res.status(400).json({ msg: "Neįkeltas failas" });
   }
 
   const uploads = [];
 
-  for (let i = 0; i < request.files.length; i += 1) {
+  for (let i = 0; i < req.files.length; i += 1) {
     uploads.push({
-      fileName: request.files[i].filename,
-      filePath: `uploads/${request.files[i].filename}`,
+      fileName: req.files[i].filename,
+      filePath: `uploads/${req.files[i].filename}`,
     });
   }
 
-  Listing.findByIdAndUpdate(request.header("listing-id"), {
+  Listing.findByIdAndUpdate(req.header("listing-id"), {
     image: uploads,
   })
-    .then(() => result.json("Nuotraukos įrašytos"))
-    .catch((error) => result.status(500).json({ error: error.message }));
+    .then(() => {
+      return res.json("Nuotraukos įrašytos");
+    })
+    .catch((err) => {
+      return res.status(500).json({ error: err.message });
+    });
 
   return undefined;
 });
 
-router.post("/add", auth, (request, result) => {
-  const writer = request.body.writer;
-  const title = request.body.title;
-  const date = Date.parse(request.body.date);
-  const condition = request.body.condition;
-  const category = request.body.category;
-  const desc = request.body.desc;
-  const location = request.body.location;
+router.post("/add", auth, (req, res) => {
+  const writer = req.body.writer;
+  const title = req.body.title;
+  const date = Date.parse(req.body.date);
+  const condition = req.body.condition;
+  const category = req.body.category;
+  const desc = req.body.desc;
+  const location = req.body.location;
 
   const newListing = new Listing({
     writer,
@@ -141,53 +147,53 @@ router.post("/add", auth, (request, result) => {
 
   newListing
     .save()
-    .then((doc) => result.json({ id: doc._id }))
-    .catch((error) => result.status(400).json(error));
+    .then((doc) => res.json({ id: doc._id }))
+    .catch((err) => res.status(400).json(err));
 });
 
-router.get("/:id", (request, result) => {
-  Listing.findById(request.params.id)
-    .then((listing) => result.json(listing))
-    .catch((error) => result.status(400).json(`Error: ${error}`));
+router.get("/:id", (req, res) => {
+  Listing.findById(req.params.id)
+    .then((listing) => res.json(listing))
+    .catch((err) => res.status(400).json(`Error: ${err}`));
 });
 
-router.delete("/:id", (request, result) => {
-  Listing.findById(request.params.id)
+router.delete("/:id", (req, res) => {
+  Listing.findById(req.params.id)
     .then((listingRes) => {
       const images = listingRes.image;
 
-      Listing.findByIdAndDelete(request.params.id)
+      Listing.findByIdAndDelete(req.params.id)
         .then(() => {
-          images.forEach(async (image) => {
+          images.forEach(async (img) => {
             try {
-              fs.unlinkSync(`${__dirname}/../${image.filePath}`);
-            } catch (error) {
-              console.error(new Error(error));
+              fs.unlinkSync(`${__dirname}/../${img.filePath}`);
+            } catch (err) {
+              console.error(err);
             }
           });
 
-          result.json("Skelbimas ištrintas.");
+          res.json("Skelbimas ištrintas.");
         })
-        .catch((error) => result.status(500).json(`Error: ${error}`));
+        .catch((err) => res.status(500).json(`Error: ${err}`));
     })
-    .catch((error) => result.status(500).json(`Error: ${error}`));
+    .catch((err) => res.status(500).json(`Error: ${err}`));
 });
 
-router.post("/update-images", upload.array("images", 6), (request, result) => {
-  if (request.files === null) {
-    return result.status(400).json({ message: "Failas neįkeltas" });
+router.post("/update-images", upload.array("images", 6), (req, res) => {
+  if (req.files === null) {
+    return res.status(400).json({ msg: "Failas neįkeltas" });
   }
 
-  const id = request.query.id;
-  const order = request.query.order.split(",").map((o) => parseInt(o, 10));
-  const filenames = request.query.filenames.split(",");
+  const id = req.query.id;
+  const order = req.query.order.split(",").map((o) => parseInt(o, 10));
+  const filenames = req.query.filenames.split(",");
 
   const uploads = [];
 
-  for (let i = 0; i < request.files.length; i += 1) {
+  for (let i = 0; i < req.files.length; i += 1) {
     uploads.push({
-      fileName: request.files[i].filename,
-      filePath: `uploads/${request.files[i].filename}`,
+      fileName: req.files[i].filename,
+      filePath: `uploads/${req.files[i].filename}`,
     });
   }
 
@@ -195,17 +201,17 @@ router.post("/update-images", upload.array("images", 6), (request, result) => {
     .then((listing) => {
       const shouldDel = [];
 
-      listing.image.forEach((image) => {
-        const found = filenames.find((fname) => fname === image.fileName);
+      listing.image.forEach((img) => {
+        const found = filenames.find((fname) => fname === img.fileName);
 
-        if (isNullable(found)) shouldDel.push(image);
+        if (isNullable(found)) shouldDel.push(img);
       });
 
       shouldDel.forEach(async (file) => {
         try {
           fs.unlinkSync(`${__dirname}/../${file.filePath}`);
-        } catch (error) {
-          console.error(new Error(error));
+        } catch (err) {
+          console.error(err);
         }
       });
 
@@ -227,53 +233,58 @@ router.post("/update-images", upload.array("images", 6), (request, result) => {
 
       listing
         .save()
-        .then(() => result.json("Skelbimas atnaujintas!"))
-        .catch((error) => result.status(500).json(`Error: ${error}`));
+        .then(() => res.json("Skelbimas atnaujintas."))
+        .catch((err) => res.status(500).json(`Error: ${err}`));
     })
-    .catch((error) => {
-      result.status(500).json(`Error: ${error}`);
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json(`Error: ${err}`);
     });
 });
 
-router.post("/update/:id", auth, (request, result) => {
-  const shouldDelete = [];
+router.post("/update/:id", auth, (req, res) => {
+  Listing.findById(req.params.id)
+    .then((listing) => {
+      listing.title = req.body.title;
+      listing.location = req.body.location;
+      listing.category = req.body.category;
+      listing.desc = req.body.desc;
+      listing.condition = req.body.condition;
 
-  Listing.findById(request.params.id).then((listing) => {
-    listing.title = request.body.title;
-    listing.location = request.body.location;
-    listing.category = request.body.category;
-    listing.condition = request.body.condition;
-    listing.desc = request.body.desc;
+      if (
+        isDefined(req.body.files) &&
+        listing.image.length !== req.body.files.length
+      ) {
+        const shouldDel = [];
 
-    if (
-      listing.image.length !== request.body.files.length &&
-      isDefined(request.body.files)
-    ) {
-      listing.image.forEach((image) => {
-        const fileFound = request.body.files.find(
-          (file) => file.fileName === image.fileName
-        );
-        if (isNullable(fileFound)) shouldDelete.push(image);
-      });
+        listing.image.forEach((img) => {
+          const found = req.body.files.find(
+            (file) => file.fileName === img.fileName
+          );
+          if (isNullable(found)) shouldDel.push(img);
+        });
 
-      shouldDelete.forEach(async (file) => {
-        try {
-          fs.unlinkSync(`${__dirname}/../${file.filePath}`);
-        } catch (error) {
-          console.error(new Error(error));
-        }
-      });
-    }
+        shouldDel.forEach(async (file) => {
+          try {
+            fs.unlinkSync(`${__dirname}/../${file.filePath}`);
+          } catch (err) {
+            console.error(err);
+          }
+        });
+      }
 
-    listing.image = isNullable(request.body.files)
-      ? listing.image
-      : request.body.files;
+      listing.image = isDefined(req.body.files)
+        ? req.body.files
+        : listing.image;
 
-    listing
-      .save()
-      .then(() => result.json("Skelbimas atnaujintas."))
-      .catch((error) => console.error(new Error(error)));
-  });
+      listing
+        .save()
+        .then(() => res.json("Skelbimas atnaujintas."))
+        .catch((err) => res.status(400).json(`Error: ${err}`));
+    })
+    .catch((err) => {
+      return res.status(400).json(`Error: ${err}`);
+    });
 });
 
 module.exports = router;

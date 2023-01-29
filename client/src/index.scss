@@ -318,11 +318,6 @@ div.listing-cover-photo {
       .select__dropdown-indicator {
         padding-right: 6px;
       }
-
-      .select__placeholder {
-        color: #727272;
-        margin-top: 1px;
-      }
     }
   }
 
@@ -487,4 +482,12 @@ input[type=checkbox]:checked+label {
 
 .border-bottom {
   border-color: #f4f4f5 !important;
+}
+
+.border-none {
+  border: none;
+}
+
+.dropdown-toggle::after {
+  display: none;
 }

@@ -3,15 +3,16 @@ const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const multer = require("multer");
+const fs = require("fs");
 const auth = require("../middleware/auth");
 const User = require("../models/user.model");
 const { isNullable, isDefined } = require("../utils/null-check");
 
 const storage = multer.diskStorage({
-  destination: (cb) => {
+  destination: (req, file, cb) => {
     cb(null, `${__dirname}/../uploads/`);
   },
-  filename: (file, cb) => {
+  filename: (req, file, cb) => {
     cb(
       null,
       `${Date.now()}-${file.originalname.toLowerCase().split(" ").join("-")}`
@@ -21,7 +22,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({
   storage,
-  fileFilter: (file, cb) => {
+  fileFilter: (req, file, cb) => {
     if (
       file.mimetype === "image/png" ||
       file.mimetype === "image/jpg" ||
@@ -37,94 +38,112 @@ const upload = multer({
   },
 });
 
-router.post("/add-to-favorites", auth, (request, result) => {
-  const id = request.body.id;
+router.post("/add-to-favorites", auth, (req, res) => {
+  const id = req.body.id;
 
-  User.findOne({ _id: request.user, favorites: id })
+  User.findOne({ _id: req.user, favorites: id })
     .then((findRes) => {
       const exists = isDefined(findRes);
 
       if (exists === true) {
-        User.findByIdAndUpdate(request.user, {
+        User.findByIdAndUpdate(req.user, {
           $pull: { favorites: id },
         })
-          .then(() => result.json({ message: "Ištrinta iš įsimintų skelbimų" }))
-          .catch((error) => result.status(500).json({ error: error.message }));
+          .then(() => {
+            return res.json({ msg: "Ištrinta iš įsimintų skelbimų" });
+          })
+          .catch((err) => {
+            return res.status(500).json({ error: err.message });
+          });
       } else {
-        User.findByIdAndUpdate(request.user, {
+        User.findByIdAndUpdate(req.user, {
           $push: { favorites: id },
         })
-          .then(() => result.json({ message: "Pridėta prie įsimintų skelbimų" }))
-          .catch((error) => result.status(500).json({ error: error.message }));
+          .then(() => {
+            return res.json({ msg: "Pridėta prie įsimintų skelbimų" });
+          })
+          .catch((err) => {
+            return res.status(500).json({ error: err.message });
+          });
       }
     })
-    .catch((error) => result.status(500).json({ error: error.message }));
+    .catch((err) => {
+      return res.status(500).json({ error: err.message });
+    });
 });
 
-router.post("/upload-image", auth, upload.single("file"), (request, result) => {
-  if (request.file === null) {
-    return result.status(400).json({ message: "Failas neįkeltas" });
+router.post("/upload-image", auth, upload.single("file"), (req, res) => {
+  if (req.file === null) {
+    return res.status(400).json({ msg: "Failas neįkeltas" });
   }
 
-  User.findByIdAndUpdate(request.user, {
+  User.findByIdAndUpdate(req.user, {
     image: {
-      fileName: request.file.filename,
-      filePath: `uploads/${request.file.filename}`,
+      fileName: req.file.filename,
+      filePath: `uploads/${req.file.filename}`,
     },
   })
-    .then(() => result.json("Paskyros nuotrauka atnaujinta"))
-    .catch((err) => result.status(500).json({ error: err.message }));
+    .then(() => {
+      return res.json("Paskyros nuotrauka atnaujinta");
+    })
+    .catch((err) => {
+      return res.status(500).json({ error: err.message });
+    });
 
   return undefined;
 });
 
-router.post("/change-info", auth, async (request, result) => {
-  const { username, email, location, password } = request.body;
+router.post("/change-info", auth, async (req, res) => {
+  const { username, email, location, password } = req.body;
 
   const salt = await bcrypt.genSalt();
   const passwordHash = await bcrypt.hash(password, salt);
 
   User.findOne({
-    $and: [{ _id: { $ne: request.user } }, { $or: [{ username }, { email }] }],
+    $and: [{ _id: { $ne: req.user } }, { $or: [{ username }, { email }] }],
   })
     .then((userRes) => {
       if (isNullable(userRes)) {
-        User.findByIdAndUpdate(request.user, {
+        User.findByIdAndUpdate(req.user, {
           username,
           email,
           location,
           password: passwordHash,
         })
-          .then(() => result.json("Informacija atnaujinta"))
-          .catch((error) => result.status(500).json({ error: error.message }));
+          .then(() => {
+            return res.json("Informacija atnaujinta");
+          })
+          .catch((err) => {
+            return res.status(500).json({ error: err.message });
+          });
       } else {
-        return result
+        return res
           .status(400)
-          .json({ message: "Slapyvardis arba el. paštas jau naudojamas" });
+          .json({ msg: "Slapyvardis arba el. paštas jau naudojamas" });
       }
     })
-    .catch((error) => {
-      console.error(new Error(error));
-      return result.status(400).send(error);
+    .catch((err) => {
+      console.error(err);
+      return res.status(400).send(err);
     });
 });
 
-router.get("/find-by-username", (request, result) => {
-  const user = request.query.username;
+router.get("/find-by-username", (req, res) => {
+  const user = req.query.username;
 
   User.find({ username: user })
     .then((userRes) => {
-      result.json(userRes);
+      res.json(userRes);
     })
-    .catch((error) => {
-      result.status(400).send(error);
+    .catch((err) => {
+      res.status(400).send(err);
     });
 });
 
-router.get("/user", auth, async (request, result) => {
-  const user = await User.findById(request.user);
+router.get("/user", auth, async (req, res) => {
+  const user = await User.findById(req.user);
 
-  result.json({
+  res.json({
     username: user.username,
     email: user.email,
     id: user._id,
@@ -135,92 +154,95 @@ router.get("/user", auth, async (request, result) => {
   });
 });
 
-router.post("/register", async (request, result) => {
+router.post("/register", async (req, res) => {
   try {
-    const { email, username, location, password, passwordCheck } = request.body;
+    const { email, password, passwordCheck, username, location } = req.body;
 
     if (
       isNullable(email) ||
-      isNullable(username) ||
-      isNullable(location) ||
       isNullable(password) ||
-      isNullable(passwordCheck)
+      isNullable(passwordCheck) ||
+      isNullable(username)
     ) {
-      return result
-        .status(400)
-        .json({ message: "Užpildykite visus laukelius" });
+      return res.status(400).json({ msg: "Užpildykite visus laukelius" });
     }
 
-    if (username.length < 4)
-      return result
+    if (password.length < 8) {
+      return res
         .status(400)
-        .json({ message: "Slapyvardis turi susidaryti bent iš 4 simbolių" });
+        .json({ msg: "Slaptažodis turi susidaryti bent iš 8 simbolių" });
+    }
 
-    if (password.length < 8)
-      return result
+    if (password !== passwordCheck) {
+      return res.status(400).json({ msg: "Slaptažodžiai nesutampa" });
+    }
+
+    if (username.length < 4) {
+      return res
         .status(400)
-        .json({ message: "Slaptažodis turi susidaryti bent iš 8 simbolių" });
+        .json({ msg: "Slapyvardis turi susidaryti bent iš 4 simbolių" });
+    }
 
-    if (password !== passwordCheck)
-      return result.status(400).json({ message: "Slaptažodžiai nesutampa" });
+    if (isNullable(location)) {
+      return res.status(400).json({ msg: "Pasirinkite miestą" });
+    }
 
     const emailExists = await User.findOne({ email });
 
-    if (emailExists)
-      return result
+    if (emailExists) {
+      return res
         .status(400)
-        .json({ message: "Naudotojas su tokiu el. paštu jau egzistuoja" });
+        .json({ msg: "Naudotojas su tokiu el. paštu jau egzistuoja" });
+    }
 
     const usernameExists = await User.findOne({ username });
 
-    if (usernameExists)
-      return result
+    if (usernameExists) {
+      return res
         .status(400)
-        .json({ message: "Naudotojas su tokiu slapyvardžiu jau egzistuoja" });
+        .json({ msg: "Naudotojas su tokiu slapyvardžiu jau egzistuoja" });
+    }
 
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(password, salt);
 
-    const createUser = new User({
+    const newUser = new User({
       email,
       password: passwordHash,
       username,
       location,
     });
 
-    const createdUser = await createUser.save();
-
-    return result.json(createdUser);
-  } catch (error) {
-    return result.status(500).json({ error: error.message });
+    const savedUser = await newUser.save();
+    return res.json(savedUser);
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
   }
 });
 
-router.post("/prisijungti", async (request, result) => {
+router.post("/prisijungti", async (req, res) => {
   try {
-    const { email, password } = request.body;
+    const { email, password } = req.body;
 
     if (!email || !password) {
-      return result
-        .status(400)
-        .json({ message: "Įrašykite el. paštą ir slaptažodį" });
+      return res.status(400).json({ msg: "Įrašykite el. paštą ir slaptažodį" });
     }
 
     const user = await User.findOne({ email });
     if (!user) {
-      return result
+      return res
         .status(400)
-        .json({ message: "Neteisingas el. paštas arba slaptažodis" });
+        .json({ msg: "Neteisingas el. paštas arba slaptažodis" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return result.status(400).json({ message: "Neteisingi duomenys" });
+      return res.status(400).json({ msg: "Neteisingi duomenys" });
     }
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
 
-    return result.json({
+    return res.json({
       token,
       user: {
         id: user._id,
@@ -232,32 +254,41 @@ router.post("/prisijungti", async (request, result) => {
       },
     });
   } catch (err) {
-    return result.status(500).json({ error: err.message });
+    return res.status(500).json({ error: err.message });
   }
 });
 
-router.delete("/delete", auth, (request, result) => {
-  User.findByIdAndDelete(request.user)
-    .then((deletedUser) => result.json(deletedUser))
-    .catch((err) => result.status(500).json({ error: err.message }));
+router.delete("/delete", auth, (req, res) => {
+  User.findByIdAndDelete(req.user)
+    .then((deletedUser) => {
+      if (deletedUser.image.fileName !== "avatar_placeholder.png") {
+        fs.unlinkSync(`${__dirname}/../${deletedUser.image.filePath}`);
+        return res.json(deletedUser);
+      }
+    })
+    .catch((err) => res.status(500).json({ error: err.message }));
 });
 
-router.post("/token-is-valid", (request, result) => {
-  const token = request.header("x-auth-token");
-  if (!token) return result.json(false);
+router.post("/token-is-valid", (req, res) => {
+  const token = req.header("x-auth-token");
+
+  if (!token) return res.json(false);
 
   const verified = jwt.verify(token, process.env.JWT_SECRET);
-  if (!verified) return result.json(false);
+  
+  if (!verified) return res.json(false);
 
   User.findById(verified.id)
     .then((userRes) => {
       if (isNullable(userRes)) {
-        return result.json(false);
+        return res.json(false);
       }
 
-      return result.json(true);
+      return res.json(true);
     })
-    .catch((error) => result.status(500).json({ error: error.message }));
+    .catch((err) => {
+      return res.status(500).json({ error: err.message });
+    });
 });
 
 module.exports = router;
