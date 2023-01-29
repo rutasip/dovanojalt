@@ -5,7 +5,7 @@ import React, {
   useRef,
   useContext,
 } from "react";
-import { Container, Form, Button, Col } from "react-bootstrap";
+import { Container, Form, Button, Col, Row } from "react-bootstrap";
 import Axios from "axios";
 import cuid from "cuid";
 import { useHistory } from "react-router-dom";
@@ -279,7 +279,7 @@ const EditListing = (props) => {
         />
       ) : null}
       <Form onSubmit={onSubmit} id="create-listing-form">
-        <Form.Row>
+        <Row>
           <Form.Group as={Col} controlId="formTitle">
             <Form.Label>Antraštė (privaloma)</Form.Label>
             <Form.Control
@@ -291,9 +291,9 @@ const EditListing = (props) => {
               }}
             />
           </Form.Group>
-        </Form.Row>
+        </Row>
 
-        <Form.Row>
+        <Row>
           <Form.Group as={Col} controlId="formZipcode">
             <Form.Label>Vieta (privaloma)</Form.Label>
             <LocationSelector
@@ -314,7 +314,7 @@ const EditListing = (props) => {
               }}
             />
           </Form.Group>
-        </Form.Row>
+        </Row>
 
         <Form.Group controlId="formDescription">
           <Form.Label>Aprašymas</Form.Label>

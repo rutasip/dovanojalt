@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Container, Form, Button, Col } from "react-bootstrap";
+import { Container, Form, Button, Col, Row } from "react-bootstrap";
 import Axios from "axios";
 import { useHistory } from "react-router-dom";
 import bsCustomFileInput from "bs-custom-file-input";
@@ -155,7 +155,7 @@ const UserSettings = () => {
         />
       ) : null}
       <Form onSubmit={onChangeInfoSubmit}>
-        <Form.Row>
+        <Row>
           <Form.Group
             as={Col}
             xs="12"
@@ -193,8 +193,8 @@ const UserSettings = () => {
               }}
             />
           </Form.Group>
-        </Form.Row>
-        <Form.Row>
+        </Row>
+        <Row>
           <Form.Group
             as={Col}
             xs="12"
@@ -232,7 +232,7 @@ const UserSettings = () => {
               }}
             />
           </Form.Group>
-        </Form.Row>
+        </Row>
         <Button variant="dark" type="submit" onClick={onChangeInfoSubmit}>
           Keisti
         </Button>{" "}
@@ -241,7 +241,7 @@ const UserSettings = () => {
       <Form onSubmit={onSubmit}>
         <Form.Group>
           <Form.Label>Paskyros nuotrauka</Form.Label>
-          <Form.File
+          <Form.Control
             id="uploadProfilePicture"
             label="Tinka tik .png ir .jpeg formatai"
             onChange={(e) => {

@@ -55,9 +55,9 @@ const Navbars = () => {
   };
 
   return (
-    <div>
+    <>
       <Login show={showModal} onHide={() => setShowModal(false)} />
-      <header id="top-navbar" className="bg-white shadow-sm">
+      <header id="top-navbar" className="border-bottom bg-white">
         <Navbar
           className="justify-content-between mx-auto"
           style={{ maxWidth: "1280px", paddingRight: "0.75rem" }}
@@ -89,7 +89,7 @@ const Navbars = () => {
               className="d-flex justify-content-center align-items-center border-0 rounded-circle"
               style={{
                 width: "73px",
-                margin: "2px 6px",
+                margin: "3px 6px 2px 6px",
               }}
             >
               <svg
@@ -105,11 +105,11 @@ const Navbars = () => {
             </Link>
           </div>
 
-          <Nav className="d-flex">
+          <Nav className="d-flex align-items-center">
             {userData.user ? (
               <>
                 <Avatar logout={logout} />
-                <Nav.Link>
+                <Nav.Link as={Link} to="/sell" className="ps-3">
                   <Button
                     className="btn font-weight-bolder shadow-sm"
                     variant="primary"
@@ -120,21 +120,6 @@ const Navbars = () => {
               </>
             ) : (
               <>
-                {/* <Nav.Link as={Link} to="/prisijungti"> */}
-                <Nav.Link>
-                  <Button
-                    className="btn font-weight-bolder shadow-sm"
-                    variant="outline-light"
-                    onClick={() => setShowModal(true)}
-                  >
-                    Registruotis | Prisijungti
-                  </Button>
-                </Nav.Link>
-                {/* <Nav.Link as={Link} to="/signup">
-                  <Button className="btn-sm" variant="primary">
-                    Registruotis
-                  </Button>
-                </Nav.Link> */}
                 <Nav.Link>
                   <Button
                     className="btn font-weight-bolder shadow-sm"
@@ -144,12 +129,21 @@ const Navbars = () => {
                     Įkelti skelbimą
                   </Button>
                 </Nav.Link>
+                <Nav.Link>
+                  <Button
+                    className="btn font-weight-bolder shadow-sm"
+                    variant="outline-light"
+                    onClick={() => setShowModal(true)}
+                  >
+                    Registruotis | Prisijungti
+                  </Button>
+                </Nav.Link>
               </>
             )}
           </Nav>
         </Navbar>
       </header>
-    </div>
+    </>
   );
 };
 

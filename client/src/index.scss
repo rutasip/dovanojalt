@@ -233,7 +233,7 @@ div.listing-cover-photo {
   }
 
   .nav-link {
-    padding: 0 0 0 0.75rem;
+    padding: 0;
 
     img {
       padding-left: 0;
@@ -286,6 +286,7 @@ div.listing-cover-photo {
 .search-bar {
   border-radius: 1rem;
   background-color: $search-field-gray;
+  max-width: 540px;
 
   .location-selector,
   .category-selector {
@@ -320,20 +321,21 @@ div.listing-cover-photo {
 
       .select__placeholder {
         color: #727272;
+        margin-top: 1px;
       }
     }
   }
 
   .location-selector {
-    min-width: 140px;
+    min-width: 126px;
   }
 
   .category-selector {
-    min-width: 180px;
+    min-width: 162px;
   }
 
-  input, input:focus {
-    min-width: 140px !important;
+  input,
+  input:focus {
     background-color: $search-field-gray;
   }
 
@@ -379,7 +381,7 @@ div.listing-cover-photo {
 }
 
 .bg-light {
-  background-color: #fcfcfc !important;
+  background-color: #fafafa !important;
 }
 
 .btn {
@@ -448,4 +450,41 @@ div.listing-cover-photo {
   .select__control {
     border-radius: 0.5rem;
   }
+}
+
+.alert-dismissible {
+  padding: 8px 16px;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items: center;
+
+  .btn-close {
+    position: unset;
+    padding: 0;
+  }
+}
+
+.hidden {
+  position: absolute;
+  visibility: hidden;
+  opacity: 0;
+}
+
+input[type=checkbox]+label {
+  color: #ccc;
+  font-style: italic;
+}
+
+input[type=checkbox]:checked+label {
+  color: #f00;
+  font-style: normal;
+}
+
+.dropdown-toggle::after {
+  border-width: 0.2rem;
+}
+
+.border-bottom {
+  border-color: #f4f4f5 !important;
 }

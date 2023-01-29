@@ -143,9 +143,6 @@ const ListingDetail = (props) => {
             </div>
             <div className="d-flex flex-column">
               <FavoritesToggle id={listing._id} size="1.4em" />
-              <span className="pt-1 text-center" style={{ fontSize: "12px" }}>
-                Įtraukti į <br /> norų sąrašą
-              </span>
             </div>
           </div>
 

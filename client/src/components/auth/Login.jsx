@@ -12,7 +12,6 @@ const Login = (props) => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [error, setError] = useState();
-  const [showModal, setShowModal] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
 
   const [signupEmail, setSignupEmail] = useState();
@@ -35,6 +34,8 @@ const Login = (props) => {
         user: loginRes.data.user,
       });
       localStorage.setItem("auth-token", loginRes.data.token);
+      document.getElementsByClassName("modal-backdrop")[0].classList.remove("show");
+      document.getElementsByClassName("modal")[0].classList.remove("show");
       history.push("/");
     } catch (err) {
       setError(err.response.data.message);
@@ -45,23 +46,25 @@ const Login = (props) => {
     e.preventDefault();
 
     const newUser = {
-      signupUsername,
-      signupEmail,
-      signupPassword,
-      signupPasswordCheck,
-      signupLocation,
+      username: signupUsername,
+      email: signupEmail,
+      password: signupPassword,
+      passwordCheck: signupPasswordCheck,
+      location: signupLocation,
     };
 
     Axios.post("/api/users/register", newUser)
       .then(() => {
         return Axios.post("/api/users/prisijungti", {
-          signupEmail,
-          signupPassword,
+          email: signupEmail,
+          password: signupPassword,
         });
       })
       .then((res) => {
         setUserData({ token: res.data.token, user: res.data.user });
         localStorage.setItem("auth-token", res.data.token);
+        document.getElementsByClassName("modal-backdrop")[0].classList.remove("show");
+        document.getElementsByClassName("modal")[0].classList.remove("show");
         history.push("/");
       })
       .catch((err) => {

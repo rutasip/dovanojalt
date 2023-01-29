@@ -6,8 +6,6 @@ import Home from "./components/Home";
 import Default from "./components/Default";
 import Sell from "./components/sell/Sell";
 import ListingDetail from "./components/listing/ListingDetail";
-import Login from "./components/auth/Login";
-import Signup from "./components/auth/Signup";
 import UserSettings from "./components/users/UserSettings";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import AuthCheckRoute from "./routes/AuthCheckRoute";
@@ -88,8 +86,6 @@ function App() {
           />
         ) : null}
         <Switch>
-          <Route exact path="/prisijungti" component={Login} />
-          <Route exact path="/signup" component={Signup} />
           <ProtectedRoute exact path="/sell" component={Sell} />
           <ProtectedRoute exact path="/messages" component={Messages} />
           <Route exact path="/user/:username" component={Seller} />

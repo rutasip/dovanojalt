@@ -3,8 +3,12 @@ import { Alert } from "react-bootstrap";
 
 const ErrorMsg = ({ clearError, message }) => {
   return (
-    <Alert variant="danger" onClose={clearError} dismissible>
-      {message}
+    <Alert
+      variant="danger"
+      onClose={clearError}
+      dismissible
+    >
+      <span style={{ fontSize: "14px" }}>{message}</span>
     </Alert>
   );
 };

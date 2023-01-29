@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useContext, useRef } from "react";
-import { Container, Form, Button, Col } from "react-bootstrap";
+import { Container, Form, Button, Row, Col } from "react-bootstrap";
 import Axios from "axios";
 import cuid from "cuid";
 import { useHistory } from "react-router-dom";
@@ -185,7 +185,7 @@ const Sell = () => {
         />
       ) : null}
       <Form onSubmit={onSubmit} id="create-listing-form">
-        <Form.Row>
+        <Row>
           <Form.Group as={Col} controlId="formTitle">
             <Form.Label>Antraštė (privaloma)</Form.Label>
             <Form.Control
@@ -195,9 +195,9 @@ const Sell = () => {
               }}
             />
           </Form.Group>
-        </Form.Row>
+        </Row>
 
-        <Form.Row>
+        <Row>
           <Form.Group
             as={Col}
             xs="12"
@@ -232,7 +232,7 @@ const Sell = () => {
               }}
             />
           </Form.Group>
-        </Form.Row>
+        </Row>
 
         <Form.Group controlId="formDescription">
           <Form.Label>Aprašymas</Form.Label>
