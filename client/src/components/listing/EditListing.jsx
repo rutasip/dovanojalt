@@ -267,7 +267,7 @@ const EditListing = (props) => {
   return loading ? (
     <LoadingSpinner className="centered-on-page-spinner" />
   ) : (
-    <Container className="pb-4">
+    <Container className="pb-4 content">
       <h2 className="py-4 text-center">Redaguoti skelbimą</h2>
       {message ? (
         <AlertMsg

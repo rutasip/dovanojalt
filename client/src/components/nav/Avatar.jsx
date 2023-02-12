@@ -8,6 +8,7 @@ const Avatar = ({ logout }) => {
 
   return (
     <NavDropdown
+      align="end"
       title={
         <Image
           src={userData.loading ? null : `/${userData.user.image.filePath}`}
@@ -17,12 +18,16 @@ const Avatar = ({ logout }) => {
         />
       }
     >
-      <NavDropdown.Item as={Link} to="/users/myitems">Mano skelbimai</NavDropdown.Item>
+      <NavDropdown.Item as={Link} to="/users/myitems">
+        Mano skelbimai
+      </NavDropdown.Item>
       <NavDropdown.Item as={Link} to="/users/settings">
         Nustatymai
       </NavDropdown.Item>
       <NavDropdown.Divider />
-      <NavDropdown.Item onClick={logout}>Atsijungti</NavDropdown.Item>
+      <NavDropdown.Item className="text-danger" onClick={logout}>
+        Atsijungti
+      </NavDropdown.Item>
     </NavDropdown>
   );
 };

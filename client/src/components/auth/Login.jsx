@@ -34,7 +34,9 @@ const Login = (props) => {
         user: loginRes.data.user,
       });
       localStorage.setItem("auth-token", loginRes.data.token);
-      document.getElementsByClassName("modal-backdrop")[0].classList.remove("show");
+      document
+        .getElementsByClassName("modal-backdrop")[0]
+        .classList.remove("show");
       document.getElementsByClassName("modal")[0].classList.remove("show");
       history.push("/");
     } catch (err) {
@@ -63,7 +65,9 @@ const Login = (props) => {
       .then((res) => {
         setUserData({ token: res.data.token, user: res.data.user });
         localStorage.setItem("auth-token", res.data.token);
-        document.getElementsByClassName("modal-backdrop")[0].classList.remove("show");
+        document
+          .getElementsByClassName("modal-backdrop")[0]
+          .classList.remove("show");
         document.getElementsByClassName("modal")[0].classList.remove("show");
         history.push("/");
       })
@@ -83,43 +87,22 @@ const Login = (props) => {
           )}
         </Modal.Header>
         <Modal.Body className="align-self-center" style={{ width: "440px" }}>
-          <div className="text-center">
-            <div className="mt-3 mb-4">
-              <div className="rounded shadow-md py-2 px-3">
-                <img
-                  src={facebookImg}
-                  style={{ float: "left" }}
-                  alt="logo"
-                  width="26"
-                ></img>
-                <span
-                  className="text-secondary"
-                  style={{ fontSize: "14px", fontWeight: "500" }}
-                >
-                  Tęsti naudojant Facebook
-                </span>
-              </div>
-              <div className="rounded shadow-md py-2 px-3 mt-3">
-                <img
-                  src={googleImg}
-                  alt="logo"
-                  style={{ float: "left" }}
-                  width="26"
-                ></img>
-                <span
-                  className="text-secondary"
-                  style={{ fontSize: "14px", fontWeight: "500" }}
-                >
-                  Tęsti naudojant Google
-                </span>
-              </div>
+          <div className="d-flex justify-content-center mt-3 mb-4">
+            <div className="rounded shadow-md mx-2 py-2 px-3">
+              <img src={facebookImg} alt="logo" width="32"></img>
+            </div>
+            <div className="rounded shadow-md mx-2 py-2 px-3">
+              <img src={googleImg} alt="logo" width="32"></img>
             </div>
           </div>
           {isLogin ? (
             <>
               <Form onSubmit={submit}>
-                <p className="text-secondary text-center mb-4" style={{ fontSize: "14px" }}>
-                  Arba prisijunk su el. paštu
+                <p
+                  className="text-border text-secondary text-center mb-4"
+                  style={{ fontSize: "14px" }}
+                >
+                  arba
                 </p>
                 {error && (
                   <ErrorMsg
@@ -160,81 +143,92 @@ const Login = (props) => {
                   Prisijungti
                 </Button>
               </Form>
+              <p
+                className="text-secondary text-center mt-4 mb-2"
+                style={{ fontSize: "14px" }}
+              >
+                dar neturi paskyros?
+              </p>
             </>
           ) : (
-            <Form id="signupForm" onSubmit={submit}>
-              <p className="text-secondary text-center mb-4" style={{ fontSize: "14px" }}>
-                Arba registruokis su el. paštu
-              </p>
-              {error && (
-                <ErrorMsg
-                  message={error}
-                  clearError={() => {
-                    setError(undefined);
-                  }}
-                />
-              )}
-              <Form.Control
-                type="text"
-                placeholder="Slapyvardis"
-                className="font-size-medium mb-3"
-                size="lg"
-                onChange={(e) => {
-                  setSignupUsername(e.target.value);
-                }}
-                autoFocus
-              />
-              <Form.Control
-                type="email"
-                placeholder="El. paštas"
-                className="font-size-medium mb-3"
-                size="lg"
-                onChange={(e) => {
-                  setSignupEmail(e.target.value);
-                }}
-              />
-              <Form.Control
-                type="password"
-                placeholder="Slaptažodis"
-                className="font-size-medium mb-3"
-                size="lg"
-                onChange={(e) => {
-                  setSignupPassword(e.target.value);
-                }}
-              />
-              <Form.Control
-                type="password"
-                placeholder="Pakartoti slaptažodį"
-                className="font-size-medium mb-3"
-                size="lg"
-                onChange={(e) => {
-                  setSignupPasswordCheck(e.target.value);
-                }}
-              />
-              <Form.Group className="font-size-medium mb-3">
-                <LocationSelector
+            <>
+              <Form id="signupForm" onSubmit={submit}>
+                <p
+                  className="text-border text-secondary text-center mb-4"
+                  style={{ fontSize: "14px" }}
+                >
+                  arba
+                </p>
+                {error && (
+                  <ErrorMsg
+                    message={error}
+                    clearError={() => {
+                      setError(undefined);
+                    }}
+                  />
+                )}
+                <Form.Control
+                  type="text"
+                  placeholder="Slapyvardis"
+                  className="font-size-medium mb-3"
+                  size="lg"
                   onChange={(e) => {
-                    setSignupLocation(e.value);
+                    setSignupUsername(e.target.value);
+                  }}
+                  autoFocus
+                />
+                <Form.Control
+                  type="email"
+                  placeholder="El. paštas"
+                  className="font-size-medium mb-3"
+                  size="lg"
+                  onChange={(e) => {
+                    setSignupEmail(e.target.value);
                   }}
                 />
-              </Form.Group>
-              <Button
-                variant="primary"
-                className="btn font-weight-bolder shadow-sm"
-                type="submit"
-                onClick={signupSubmit}
-                style={{ width: "100%" }}
+                <Form.Control
+                  type="password"
+                  placeholder="Slaptažodis"
+                  className="font-size-medium mb-3"
+                  size="lg"
+                  onChange={(e) => {
+                    setSignupPassword(e.target.value);
+                  }}
+                />
+                <Form.Control
+                  type="password"
+                  placeholder="Pakartoti slaptažodį"
+                  className="font-size-medium mb-3"
+                  size="lg"
+                  onChange={(e) => {
+                    setSignupPasswordCheck(e.target.value);
+                  }}
+                />
+                <Form.Group className="font-size-medium mb-3">
+                  <LocationSelector
+                    onChange={(e) => {
+                      setSignupLocation(e.value);
+                    }}
+                  />
+                </Form.Group>
+                <Button
+                  variant="primary"
+                  className="btn font-weight-bolder shadow-sm"
+                  type="submit"
+                  onClick={signupSubmit}
+                  style={{ width: "100%" }}
+                >
+                  Registruotis
+                </Button>
+              </Form>
+              <p
+                className="text-secondary text-center mt-4 mb-2"
+                style={{ fontSize: "14px" }}
               >
-                Registruotis
-              </Button>
-            </Form>
+                jau turi paskyrą?
+              </p>
+            </>
           )}
-          <p
-            className="text-border text-secondary text-center"
-            style={{ fontSize: "14px", marginTop: "10px" }}
-          >
-            arba
-          </p>
           <Button
             variant="dark"
             className="btn font-weight-bolder shadow-sm"

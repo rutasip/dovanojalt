@@ -173,8 +173,7 @@ const Sell = () => {
   };
 
   return (
-    <Container className="pb-4">
-      <h2 className="py-4 text-center">Naujas skelbimas</h2>
+    <Container fluid className="g-0 pb-5 content">
       {message ? (
         <AlertMsg
           message={message}
@@ -184,9 +183,14 @@ const Sell = () => {
           }}
         />
       ) : null}
-      <Form onSubmit={onSubmit} id="create-listing-form">
-        <Row>
-          <Form.Group as={Col} controlId="formTitle">
+      <Form
+        as={Row}
+        onSubmit={onSubmit}
+        id="create-listing-form"
+        className="px-3"
+      >
+        <Col xs={8} className="bg-white rounded shadow-sm mx-2 p-3">
+          <Form.Group controlId="formTitle">
             <Form.Label>Antraštė (privaloma)</Form.Label>
             <Form.Control
               type="text"
@@ -195,85 +199,75 @@ const Sell = () => {
               }}
             />
           </Form.Group>
-        </Row>
 
-        <Row>
-          <Form.Group
-            as={Col}
-            xs="12"
-            sm="12"
-            md="12"
-            lg="6"
-            xl="6"
-            controlId="formZipcode"
-          >
-            <Form.Label>Vieta (privaloma)</Form.Label>
-            <LocationSelector
+          <Row>
+            <Form.Group as={Col} xs="12" lg="6" controlId="formZipcode">
+              <Form.Label>Miestas (privaloma)</Form.Label>
+              <LocationSelector
+                onChange={(e) => {
+                  setLocation(e.value);
+                }}
+              />
+            </Form.Group>
+
+            <Form.Group as={Col} xs="12" lg="6" controlId="formCategory">
+              <Form.Label>Kategorija (privaloma)</Form.Label>
+              <CategorySelector
+                isMulti={false}
+                onChange={(e) => {
+                  setCategory(e.value);
+                }}
+              />
+            </Form.Group>
+          </Row>
+
+          <Form.Group controlId="formDescription">
+            <Form.Label>Aprašymas</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows="4"
               onChange={(e) => {
-                setLocation(e.value);
+                setDesc(e.target.value);
               }}
             />
           </Form.Group>
 
-          <Form.Group
-            as={Col}
-            xs="12"
-            sm="12"
-            md="12"
-            lg="6"
-            xl="6"
-            controlId="formCategory"
-          >
-            <Form.Label>Kategorija (privaloma)</Form.Label>
-            <CategorySelector
-              isMulti={false}
-              onChange={(e) => {
-                setCategory(e.value);
-              }}
-            />
+          <Row>
+            <Form.Group as={Col} xs="12" lg="6" controlId="formCondition">
+              <Form.Label>Būklė (privaloma)</Form.Label>
+              <Form.Control
+                as="select"
+                defaultValue="Pasirinkti..."
+                onChange={(e) => {
+                  setCondition(e.target.value);
+                }}
+              >
+                <option></option>
+                <option>Nauja</option>
+                <option>Naudota</option>
+              </Form.Control>
+            </Form.Group>
+          </Row>
+
+          <div className="d-flex justify-content-end">
+            <Button variant="dark" type="submit">
+              Skelbti
+            </Button>
+          </div>
+        </Col>
+        <Col xs={4} className="bg-white rounded shadow-sm mx-2 p-3">
+          <Form.Group controlId="formImages">
+            <Form.Label>Nuotraukos</Form.Label>
+            <ListingImageUpload onDrop={onDrop} />
+            <DndProvider backend={HTML5Backend}>
+              <ImageList
+                images={images}
+                moveImage={moveImage}
+                onDelete={onDelete}
+              />
+            </DndProvider>
           </Form.Group>
-        </Row>
-
-        <Form.Group controlId="formDescription">
-          <Form.Label>Aprašymas</Form.Label>
-          <Form.Control
-            as="textarea"
-            rows="4"
-            onChange={(e) => {
-              setDesc(e.target.value);
-            }}
-          />
-        </Form.Group>
-
-        <Form.Group controlId="formCondition">
-          <Form.Label>Būklė (privaloma)</Form.Label>
-          <Form.Control
-            as="select"
-            defaultValue="Pasirinkti..."
-            onChange={(e) => {
-              setCondition(e.target.value);
-            }}
-          >
-            <option></option>
-            <option>Nauja</option>
-            <option>Naudota</option>
-          </Form.Control>
-        </Form.Group>
-
-        <Form.Group controlId="formImages">
-          <Form.Label>Nuotraukos</Form.Label>
-          <ListingImageUpload onDrop={onDrop} />
-          <DndProvider backend={HTML5Backend}>
-            <ImageList
-              images={images}
-              moveImage={moveImage}
-              onDelete={onDelete}
-            />
-          </DndProvider>
-        </Form.Group>
-        <Button style={{ float: "right" }} variant="dark" type="submit">
-          Skelbti
-        </Button>
+        </Col>
       </Form>
     </Container>
   );

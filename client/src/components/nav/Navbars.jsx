@@ -59,8 +59,8 @@ const Navbars = () => {
       <Login show={showModal} onHide={() => setShowModal(false)} />
       <header id="top-navbar" className="border-bottom bg-white">
         <Navbar
-          className="justify-content-between mx-auto"
-          style={{ maxWidth: "1280px", paddingRight: "0.75rem" }}
+          className="justify-content-between px-3 mx-auto"
+          style={{ maxWidth: "1420px" }}
         >
           <Nav.Link as={Link} to="/" className="logo-img-text">
             <img src={logoImg} alt="logo" height="16"></img>
@@ -160,7 +160,7 @@ const Navbars = () => {
               <>
                 <Nav.Link>
                   <Button
-                    className="btn font-weight-bolder shadow-sm"
+                    className="btn font-weight-bolder shadow-sm me-3"
                     variant="primary"
                     onClick={() => setShowModal(true)}
                   >

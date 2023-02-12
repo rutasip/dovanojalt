@@ -142,7 +142,7 @@ const ListingDetail = (props) => {
               {listing.condition}
             </div>
             <div className="d-flex flex-column">
-              <FavoritesToggle id={listing._id} size="1.4em" />
+              <FavoritesToggle id={listing._id} size="1.4em" includeText />
             </div>
           </div>
 

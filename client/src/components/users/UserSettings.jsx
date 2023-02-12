@@ -243,20 +243,17 @@ const UserSettings = () => {
           <Form.Label>Paskyros nuotrauka</Form.Label>
           <Form.Control
             id="uploadProfilePicture"
-            label="Tinka tik .png ir .jpeg formatai"
             onChange={(e) => {
               setFile(e.target.files[0]);
             }}
-            custom
+            accept="image/*"
+            type="file"
           />
         </Form.Group>
-        <Progress percentage={uploadPercentage} />
-        <br />
         <Button variant="dark" type="submit">
           Įkelti
         </Button>
       </Form>
-      <br />
       <Button
         variant="danger"
         className="float-right"

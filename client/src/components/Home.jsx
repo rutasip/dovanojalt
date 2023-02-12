@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 // import { useContext } from "react";
 import Axios from "axios";
-import { Container, Row } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import Listing from "./listing/Listing";
 import LoadingSpinner from "./shared/LoadingSpinner";
 // import UserContext from "../context/UserContext";
@@ -67,7 +67,7 @@ const Home = (props) => {
   return listingData.loading ? (
     <LoadingSpinner className="centered-on-page-spinner" />
   ) : (
-    <Container>
+    <Container fluid className="g-0 pb-5 content">
       {message ? (
         <AlertMsg
           message={message}
@@ -78,7 +78,7 @@ const Home = (props) => {
         />
       ) : null}
 
-      <Row>
+      <div id="feed" className="px-3">
         {listingData.listings.map((listing) => (
           <Listing
             title={listing.title}
@@ -88,9 +88,11 @@ const Home = (props) => {
             location={listing.location}
             key={listing._id}
             id={listing._id}
+            writer={listing.writer.username}
+            avatar={listing.writer.image.filePath}
           />
         ))}
-      </Row>
+      </div>
     </Container>
   );
 };
