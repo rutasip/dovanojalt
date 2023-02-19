@@ -5,7 +5,7 @@ import Navbars from "./components/nav/Navbars";
 import Home from "./components/Home";
 import Default from "./components/Default";
 import Sell from "./components/sell/Sell";
-// import ListingDetail from "./components/listing/ListingDetail";
+import ListingDetail from "./components/listing/ListingDetail";
 import UserSettings from "./components/users/UserSettings";
 import ProtectedRoute from "./routes/ProtectedRoute";
 // import AuthCheckRoute from "./routes/AuthCheckRoute";
@@ -56,7 +56,6 @@ function App() {
                   user: userRes.data,
                   loading: false,
                 });
-                console.log(userRes);
               })
               .catch((error) => {
                 console.error(new Error(error));
@@ -93,10 +92,10 @@ function App() {
           <Route exact path="/users/settings" element={<UserSettings />} />
           <Route exact path="/users/myitems" element={<MyItems />} />
           <Route exact path="/users/favorites" element={<Favorites />} />
-          <Route exact path="/:location?/:category?/:text?" element={<Home />} />
         </Route>
         <Route exact path="/user/:username" component={Seller} />
-        {/* <AuthCheckRoute exact path="/detail/:id" component={ListingDetail} /> */}
+        <Route exact path="/" element={<Home />} />
+        <Route exact path="/detail/:id" element={<ListingDetail />} />
         <Route component={Default} />
       </Routes>
     </UserContext.Provider>

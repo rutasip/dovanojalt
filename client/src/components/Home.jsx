@@ -8,12 +8,12 @@ import LoadingSpinner from "./shared/LoadingSpinner";
 // import { isDefined } from "../utils/null-checks";
 import AlertMsg from "./shared/AlertMsg";
 
-function Home(props) {
-  const {
-    match: {
-      params: { location, category, text },
-    },
-  } = props;
+function Home() {
+  // const {
+  //   match: {
+  //     params: { location, category, text },
+  //   },
+  // } = props;
 
   // const { userData } = useContext(UserContext);
 
@@ -36,17 +36,17 @@ function Home(props) {
   const getListings = (variables) => {
     Axios.post("/api/listings/", variables)
       .then((res) => {
-        if (variables.fetchMore === true) {
-          setListingData({
-            listings: [...listingData.listings, ...res.data],
-            loading: false,
-          });
-        } else {
+        // if (variables.fetchMore === true) {
+        //   setListingData({
+        //     listings: [...listingData.listings, ...res.data],
+        //     loading: false,
+        //   });
+        // } else {
           setListingData({
             listings: res.data,
             loading: false,
           });
-        }
+        // }
       })
       .catch((error) => {
         setMessage("Nepavyko gauti skelbimų. Pabandykite dar kartą");
@@ -54,15 +54,19 @@ function Home(props) {
       });
   };
 
-  useEffect(() => {
-    const variables = {
-      location,
-      category,
-      text,
-    };
+  // useEffect(() => {
+  //   const variables = {
+  //     location,
+  //     category,
+  //     text,
+  //   };
 
-    getListings(variables);
-  }, [location, category, text]);
+  //   getListings(variables);
+  // }, [location, category, text]);
+
+  useEffect(() => {
+    getListings();
+  }, []);
 
   return listingData.loading ? (
     <LoadingSpinner className="centered-on-page-spinner" />
