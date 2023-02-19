@@ -3,7 +3,7 @@ import Axios from "axios";
 import moment from "moment";
 import "moment/locale/lt";
 import { Container, Row, Col, Button } from "react-bootstrap";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { socket } from "../../services/socket";
 import ListingImageCarousel from "./ListingImageCarousel";
 import ListingUserInfo from "./ListingUserInfo";
@@ -25,7 +25,7 @@ const ListingDetail = (props) => {
 
   const { userData, setGlobalMsg } = useContext(UserContext);
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   moment.locale("lt");
 
@@ -65,7 +65,7 @@ const ListingDetail = (props) => {
   const deleteListing = () => {
     Axios.delete(`/api/listings/${id}`)
       .then(() => {
-        history.push("/");
+        navigate("/");
         setGlobalMsg({
           message: "Skelbimas ištrintas!",
           variant: "dark",

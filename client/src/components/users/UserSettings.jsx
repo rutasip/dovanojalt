@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { Container, Form, Button, Col, Row } from "react-bootstrap";
 import Axios from "axios";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import bsCustomFileInput from "bs-custom-file-input";
 import UserContext from "../../context/UserContext";
 import Progress from "./Progress";
@@ -13,7 +13,7 @@ import { isDefined, isNullable } from "../../utils/null-checks";
 const UserSettings = () => {
   bsCustomFileInput.init();
   const { userData, setUserData, setGlobalMsg } = useContext(UserContext);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [file, setFile] = useState();
   const [message, setMessage] = useState({
@@ -134,7 +134,7 @@ const UserSettings = () => {
           user: undefined,
         });
         localStorage.setItem("auth-token", "");
-        history.push("/");
+        navigate("/");
         setGlobalMsg({ message: "Paskyra ištrinta", variant: "dark" });
       })
       .catch((error) => {

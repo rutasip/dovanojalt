@@ -8,7 +8,7 @@ import React, {
 import { Container, Form, Button, Col, Row } from "react-bootstrap";
 import Axios from "axios";
 import cuid from "cuid";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import update from "immutability-helper";
@@ -24,7 +24,7 @@ import AlertMsg from "../shared/AlertMsg";
 const EditListing = (props) => {
   const { setGlobalMsg } = useContext(UserContext);
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [title, setTitle] = useState();
   const [location, setLocation] = useState();
@@ -79,7 +79,7 @@ const EditListing = (props) => {
       message: "Skelbimas atnaujintas!",
       variant: "dark",
     });
-    history.push("/");
+    navigate("/");
   };
 
   const moveImage = (dragIndex, hoverIndex) => {

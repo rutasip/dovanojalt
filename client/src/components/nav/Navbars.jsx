@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button, Form, Navbar, Nav } from "react-bootstrap";
 import { isNullable } from "../../utils/null-checks";
 import UserContext from "../../context/UserContext";
@@ -11,7 +11,7 @@ import Login from "../auth/Login";
 
 const Navbars = () => {
   const { userData, setUserData } = useContext(UserContext);
-  const history = useHistory();
+  const navigate = useNavigate();
   const [location, setLocation] = useState("");
   const [category, setCategory] = useState("");
   const [text, setText] = useState("");
@@ -24,7 +24,7 @@ const Navbars = () => {
       user: undefined,
     });
     localStorage.setItem("auth-token", "");
-    history.push("/");
+    navigate("/");
   };
 
   const onLocationChange = (e) => {

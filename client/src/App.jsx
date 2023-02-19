@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { Switch, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Axios from "axios";
 import Navbars from "./components/nav/Navbars";
 import Home from "./components/Home";
@@ -85,7 +85,7 @@ function App() {
             }}
           />
         ) : null}
-        <Switch>
+        <Routes>
           <ProtectedRoute exact path="/sell" component={Sell} />
           <ProtectedRoute exact path="/messages" component={Messages} />
           <Route exact path="/user/:username" component={Seller} />
@@ -104,7 +104,7 @@ function App() {
           <ProtectedRoute exact path="/users/favorites" component={Favorites} />
           <AuthCheckRoute exact path="/:location?/:category?/:text?" component={Home}/>
           <Route component={Default} />
-        </Switch>
+        </Routes>
       </UserContext.Provider>
     </>
   );

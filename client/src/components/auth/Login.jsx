@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Form, Button, Modal } from "react-bootstrap";
 import Axios from "axios";
 import ErrorMsg from "./ErrorMsg";
@@ -21,7 +21,7 @@ const Login = (props) => {
   const [signupLocation, setSignupLocation] = useState();
 
   const { setUserData } = useContext(UserContext);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const submit = async (e) => {
     e.preventDefault();
@@ -38,7 +38,7 @@ const Login = (props) => {
         .getElementsByClassName("modal-backdrop")[0]
         .classList.remove("show");
       document.getElementsByClassName("modal")[0].classList.remove("show");
-      history.push("/");
+      navigate("/");
     } catch (err) {
       setError(err.response.data.message);
     }
@@ -69,7 +69,7 @@ const Login = (props) => {
           .getElementsByClassName("modal-backdrop")[0]
           .classList.remove("show");
         document.getElementsByClassName("modal")[0].classList.remove("show");
-        history.push("/");
+        navigate("/");
       })
       .catch((err) => {
         setError(err.response.data.message);

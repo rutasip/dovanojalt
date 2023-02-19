@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Redirect, Route } from "react-router-dom";
+import { Navigate, Route } from "react-router-dom";
 import UserContext from "../context/UserContext";
 import LoadingSpinner from "../components/shared/LoadingSpinner";
 
@@ -15,7 +15,7 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
         ) : userData.user ? (
           <Component {...props} />
         ) : (
-          <Redirect to={{ pathname: "/prisijungti" }} />
+          <Navigate to={{ pathname: "/prisijungti" }} />
         )
       }
     />

@@ -5,8 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "pre-commit": "lint-staged",
-    "heroku-postbuild": "cd client && npm install && npm run build"
+    "pre-commit": "lint-staged"
   },
   "keywords": [],
   "author": "",
@@ -27,7 +26,6 @@
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-node": "^11.1.0",
-    "husky": "^4.2.5",
     "lint-staged": "^10.2.11",
     "prettier": "2.0.5"
   },
@@ -36,10 +34,5 @@
       "eslint --fix",
       "prettier --write"
     ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "yarn pre-commit"
-    }
   }
 }

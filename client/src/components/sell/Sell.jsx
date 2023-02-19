@@ -2,7 +2,7 @@ import React, { useState, useCallback, useContext, useRef } from "react";
 import { Container, Form, Button, Row, Col } from "react-bootstrap";
 import Axios from "axios";
 import cuid from "cuid";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import update from "immutability-helper";
@@ -17,7 +17,7 @@ import AlertMsg from "../shared/AlertMsg";
 const Sell = () => {
   const { userData, setGlobalMsg } = useContext(UserContext);
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [title, setTitle] = useState();
   const [location, setLocation] = useState();
@@ -38,7 +38,7 @@ const Sell = () => {
       message: "Skelbimas įkeltas!",
       variant: "dark",
     });
-    history.push("/");
+    navigate("/");
   };
 
   const moveImage = (dragIndex, hoverIndex) => {
