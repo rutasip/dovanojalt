@@ -1,9 +1,10 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React, { useContext } from "react";
 import { Route } from "react-router-dom";
 import UserContext from "../context/UserContext";
 import LoadingSpinner from "../components/shared/LoadingSpinner";
 
-const AuthCheckRoute = ({ component: Component, ...rest }) => {
+function AuthCheckRoute({ component: Component, ...rest }) {
   const { userData } = useContext(UserContext);
 
   return (

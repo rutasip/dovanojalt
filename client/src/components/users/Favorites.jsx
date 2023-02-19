@@ -7,7 +7,7 @@ import LoadingSpinner from "../shared/LoadingSpinner";
 import Listing from "../listing/Listing";
 import AlertMsg from "../shared/AlertMsg";
 
-const Favorites = () => {
+function Favorites() {
   const { userData } = useContext(UserContext);
   const [listings, setListings] = useState();
   const [loading, setLoading] = useState(true);
@@ -76,6 +76,6 @@ const Favorites = () => {
       </Row>
     </Container>
   );
-};
+}
 
 export default Favorites;

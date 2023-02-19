@@ -1,8 +1,9 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 
-const MessageModal = (props) => {
-  const { onSendMessage, setChatMessage, ...rest } = props;
+function MessageModal(props) {
+  const { onSendMessage, setChatMessage, disabled, onHide, ...rest } = props;
 
   return (
     <Modal
@@ -28,12 +29,12 @@ const MessageModal = (props) => {
       <Modal.Footer>
         <Button
           variant="dark"
-          disabled={props.disabled}
+          disabled={disabled}
           onClick={onSendMessage}
         >
           Siųsti
         </Button>
-        <Button variant="secondary" onClick={props.onHide}>
+        <Button variant="secondary" onClick={onHide}>
           Uždaryti
         </Button>
       </Modal.Footer>

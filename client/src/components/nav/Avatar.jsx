@@ -3,7 +3,7 @@ import { Image, NavDropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import UserContext from "../../context/UserContext";
 
-const Avatar = ({ logout }) => {
+function Avatar({ logout }) {
   const { userData } = useContext(UserContext);
 
   return (

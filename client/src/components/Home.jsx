@@ -8,7 +8,7 @@ import LoadingSpinner from "./shared/LoadingSpinner";
 // import { isDefined } from "../utils/null-checks";
 import AlertMsg from "./shared/AlertMsg";
 
-const Home = (props) => {
+function Home(props) {
   const {
     match: {
       params: { location, category, text },

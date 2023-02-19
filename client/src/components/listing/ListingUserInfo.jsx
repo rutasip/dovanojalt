@@ -2,7 +2,7 @@ import React from "react";
 import { Image } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-const ListingUserInfo = ({ writer }) => {
+function ListingUserInfo({ writer }) {
   return (
     <Link
       to={`/user/${writer.username}`}

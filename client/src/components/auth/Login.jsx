@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Form, Button, Modal } from "react-bootstrap";
@@ -8,7 +9,7 @@ import facebookImg from "../../assets/icons8-facebook.svg";
 import googleImg from "../../assets/icons8-google.svg";
 import LocationSelector from "../shared/LocationSelector";
 
-const Login = (props) => {
+function Login(props) {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [error, setError] = useState();
@@ -57,7 +58,7 @@ const Login = (props) => {
 
     Axios.post("/api/users/register", newUser)
       .then(() => {
-        return Axios.post("/api/users/prisijungti", {
+        Axios.post("/api/users/prisijungti", {
           email: signupEmail,
           password: signupPassword,
         });
@@ -77,170 +78,168 @@ const Login = (props) => {
   };
 
   return (
-    <>
-      <Modal centered className="d-flex" block="true" {...props}>
-        <Modal.Header closeButton>
-          {isLogin ? (
-            <Modal.Title className="h5">Prisijungti</Modal.Title>
-          ) : (
-            <Modal.Title className="h5">Registruotis</Modal.Title>
-          )}
-        </Modal.Header>
-        <Modal.Body className="align-self-center" style={{ width: "440px" }}>
-          <div className="d-flex justify-content-center mt-3 mb-4">
-            <div className="rounded shadow-md mx-2 py-2 px-3">
-              <img src={facebookImg} alt="logo" width="32"></img>
-            </div>
-            <div className="rounded shadow-md mx-2 py-2 px-3">
-              <img src={googleImg} alt="logo" width="32"></img>
-            </div>
+    <Modal centered className="d-flex" block="true" {...props}>
+      <Modal.Header closeButton>
+        {isLogin ? (
+          <Modal.Title className="h5">Prisijungti</Modal.Title>
+        ) : (
+          <Modal.Title className="h5">Registruotis</Modal.Title>
+        )}
+      </Modal.Header>
+      <Modal.Body className="align-self-center" style={{ width: "440px" }}>
+        <div className="d-flex justify-content-center mt-3 mb-4">
+          <div className="rounded shadow-md mx-2 py-2 px-3">
+            <img src={facebookImg} alt="logo" width="32"/>
           </div>
-          {isLogin ? (
-            <>
-              <Form onSubmit={submit}>
-                <p
-                  className="text-border text-secondary text-center mb-4"
-                  style={{ fontSize: "14px" }}
-                >
-                  arba
-                </p>
-                {error && (
-                  <ErrorMsg
-                    message={error}
-                    clearError={() => {
-                      setError(undefined);
-                    }}
-                  />
-                )}
-                <Form.Control
-                  type="email"
-                  placeholder="El. paštas"
-                  className="font-size-medium mb-3"
-                  size="lg"
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                  }}
-                  autoFocus
-                />
-                <Form.Control
-                  type="password"
-                  placeholder="Slaptažodis"
-                  className="font-size-medium mb-3"
-                  size="lg"
-                  onChange={(e) => {
-                    setPassword(e.target.value);
+          <div className="rounded shadow-md mx-2 py-2 px-3">
+            <img src={googleImg} alt="logo" width="32"/>
+          </div>
+        </div>
+        {isLogin ? (
+          <>
+            <Form onSubmit={submit}>
+              <p
+                className="text-border text-secondary text-center mb-4"
+                style={{ fontSize: "14px" }}
+              >
+                arba
+              </p>
+              {error && (
+                <ErrorMsg
+                  message={error}
+                  clearError={() => {
+                    setError(undefined);
                   }}
                 />
+              )}
+              <Form.Control
+                type="email"
+                placeholder="El. paštas"
+                className="font-size-medium mb-3"
+                size="lg"
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                }}
+                autoFocus
+              />
+              <Form.Control
+                type="password"
+                placeholder="Slaptažodis"
+                className="font-size-medium mb-3"
+                size="lg"
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                }}
+              />
 
-                <Button
-                  variant="primary"
-                  className="btn font-weight-bolder shadow-sm"
-                  type="submit"
-                  onClick={submit}
-                  block
-                  style={{ width: "100%" }}
-                >
-                  Prisijungti
-                </Button>
-              </Form>
+              <Button
+                variant="primary"
+                className="btn font-weight-bolder shadow-sm"
+                type="submit"
+                onClick={submit}
+                block
+                style={{ width: "100%" }}
+              >
+                Prisijungti
+              </Button>
+            </Form>
+            <p
+              className="text-secondary text-center mt-4 mb-2"
+              style={{ fontSize: "14px" }}
+            >
+              dar neturi paskyros?
+            </p>
+          </>
+        ) : (
+          <>
+            <Form id="signupForm" onSubmit={submit}>
               <p
-                className="text-secondary text-center mt-4 mb-2"
+                className="text-border text-secondary text-center mb-4"
                 style={{ fontSize: "14px" }}
               >
-                dar neturi paskyros?
+                arba
               </p>
-            </>
-          ) : (
-            <>
-              <Form id="signupForm" onSubmit={submit}>
-                <p
-                  className="text-border text-secondary text-center mb-4"
-                  style={{ fontSize: "14px" }}
-                >
-                  arba
-                </p>
-                {error && (
-                  <ErrorMsg
-                    message={error}
-                    clearError={() => {
-                      setError(undefined);
-                    }}
-                  />
-                )}
-                <Form.Control
-                  type="text"
-                  placeholder="Slapyvardis"
-                  className="font-size-medium mb-3"
-                  size="lg"
-                  onChange={(e) => {
-                    setSignupUsername(e.target.value);
-                  }}
-                  autoFocus
-                />
-                <Form.Control
-                  type="email"
-                  placeholder="El. paštas"
-                  className="font-size-medium mb-3"
-                  size="lg"
-                  onChange={(e) => {
-                    setSignupEmail(e.target.value);
+              {error && (
+                <ErrorMsg
+                  message={error}
+                  clearError={() => {
+                    setError(undefined);
                   }}
                 />
-                <Form.Control
-                  type="password"
-                  placeholder="Slaptažodis"
-                  className="font-size-medium mb-3"
-                  size="lg"
+              )}
+              <Form.Control
+                type="text"
+                placeholder="Slapyvardis"
+                className="font-size-medium mb-3"
+                size="lg"
+                onChange={(e) => {
+                  setSignupUsername(e.target.value);
+                }}
+                autoFocus
+              />
+              <Form.Control
+                type="email"
+                placeholder="El. paštas"
+                className="font-size-medium mb-3"
+                size="lg"
+                onChange={(e) => {
+                  setSignupEmail(e.target.value);
+                }}
+              />
+              <Form.Control
+                type="password"
+                placeholder="Slaptažodis"
+                className="font-size-medium mb-3"
+                size="lg"
+                onChange={(e) => {
+                  setSignupPassword(e.target.value);
+                }}
+              />
+              <Form.Control
+                type="password"
+                placeholder="Pakartoti slaptažodį"
+                className="font-size-medium mb-3"
+                size="lg"
+                onChange={(e) => {
+                  setSignupPasswordCheck(e.target.value);
+                }}
+              />
+              <Form.Group className="font-size-medium mb-3">
+                <LocationSelector
                   onChange={(e) => {
-                    setSignupPassword(e.target.value);
+                    setSignupLocation(e.value);
                   }}
                 />
-                <Form.Control
-                  type="password"
-                  placeholder="Pakartoti slaptažodį"
-                  className="font-size-medium mb-3"
-                  size="lg"
-                  onChange={(e) => {
-                    setSignupPasswordCheck(e.target.value);
-                  }}
-                />
-                <Form.Group className="font-size-medium mb-3">
-                  <LocationSelector
-                    onChange={(e) => {
-                      setSignupLocation(e.value);
-                    }}
-                  />
-                </Form.Group>
-                <Button
-                  variant="primary"
-                  className="btn font-weight-bolder shadow-sm"
-                  type="submit"
-                  onClick={signupSubmit}
-                  style={{ width: "100%" }}
-                >
-                  Registruotis
-                </Button>
-              </Form>
-              <p
-                className="text-secondary text-center mt-4 mb-2"
-                style={{ fontSize: "14px" }}
+              </Form.Group>
+              <Button
+                variant="primary"
+                className="btn font-weight-bolder shadow-sm"
+                type="submit"
+                onClick={signupSubmit}
+                style={{ width: "100%" }}
               >
-                jau turi paskyrą?
-              </p>
-            </>
-          )}
-          <Button
-            variant="dark"
-            className="btn font-weight-bolder shadow-sm"
-            style={{ width: "100%" }}
-            onClick={() => (isLogin ? setIsLogin(false) : setIsLogin(true))}
-          >
-            {isLogin ? "Registruotis" : "Prisijungti"}
-          </Button>
-        </Modal.Body>
-      </Modal>
-    </>
+                Registruotis
+              </Button>
+            </Form>
+            <p
+              className="text-secondary text-center mt-4 mb-2"
+              style={{ fontSize: "14px" }}
+            >
+              jau turi paskyrą?
+            </p>
+          </>
+        )}
+        <Button
+          variant="dark"
+          className="btn font-weight-bolder shadow-sm"
+          style={{ width: "100%" }}
+          onClick={() => (isLogin ? setIsLogin(false) : setIsLogin(true))}
+        >
+          {isLogin ? "Registruotis" : "Prisijungti"}
+        </Button>
+      </Modal.Body>
+    </Modal>
   );
-};
+}
 
 export default Login;

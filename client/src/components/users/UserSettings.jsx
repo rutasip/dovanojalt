@@ -4,13 +4,12 @@ import Axios from "axios";
 import { useNavigate } from "react-router-dom";
 import bsCustomFileInput from "bs-custom-file-input";
 import UserContext from "../../context/UserContext";
-import Progress from "./Progress";
 import LocationSelector from "../shared/LocationSelector";
 import DeleteModal from "../shared/DeleteModal";
 import AlertMsg from "../shared/AlertMsg";
 import { isDefined, isNullable } from "../../utils/null-checks";
 
-const UserSettings = () => {
+function UserSettings() {
   bsCustomFileInput.init();
   const { userData, setUserData, setGlobalMsg } = useContext(UserContext);
   const navigate = useNavigate();
@@ -20,7 +19,7 @@ const UserSettings = () => {
     message: undefined,
     variant: undefined,
   });
-  const [uploadPercentage, setUploadPercentage] = useState(0);
+  const [setUploadPercentage] = useState(0);
   const [username, setUsername] = useState(userData.user.username);
   const [email, setEmail] = useState(userData.user.email);
   const [location, setLocation] = useState(userData.user.location);

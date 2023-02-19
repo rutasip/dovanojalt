@@ -3,12 +3,7 @@ import Select from "react-select";
 import cities from "../../data/cities";
 import { isNullable } from "../../utils/null-checks";
 
-const LocationSelector = ({
-  onChange,
-  className,
-  isClearable,
-  defaultValue,
-}) => {
+function LocationSelector({ onChange, className, isClearable, defaultValue }) {
   const defaultLabel = isNullable(defaultValue)
     ? null
     : cities.find((city) => city.value === defaultValue);
@@ -25,6 +20,6 @@ const LocationSelector = ({
       defaultValue={defaultLabel}
     />
   );
-};
+}
 
 export default LocationSelector;

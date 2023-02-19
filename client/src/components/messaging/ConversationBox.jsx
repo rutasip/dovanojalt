@@ -12,7 +12,7 @@ const SCROLL_TO_BOTTOM_CSS = css({
   height: 300,
 });
 
-const ConversationBox = ({ listing, conversations, user, socket }) => {
+function ConversationBox({ listing, conversations, user, socket }) {
   const getChatPartner = () => {
     const sample = conversations[0];
     if (user.id === sample.writer._id) {

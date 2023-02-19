@@ -1,10 +1,11 @@
+/* eslint-disable no-param-reassign */
 import React, { useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { Image } from "react-bootstrap";
 
 const type = "Image";
 
-const ImageItem = ({ image, index, moveImage, onDelete }) => {
+function ImageItem({ image, index, moveImage, onDelete }) {
   const ref = useRef(null);
 
   const [, drop] = useDrop({
@@ -70,21 +71,19 @@ const ImageItem = ({ image, index, moveImage, onDelete }) => {
       />
     </div>
   );
-};
+}
 
-const ImageList = ({ images, moveImage, onDelete }) => {
-  const renderImage = (image, index) => {
-    return (
-      <ImageItem
-        image={image}
-        index={index}
-        key={`${image.id}-image`}
-        moveImage={moveImage}
-        onDelete={onDelete}
-      />
-    );
-  };
+function ImageList({ images, moveImage, onDelete }) {
+  const renderImage = (image, index) => (
+    <ImageItem
+      image={image}
+      index={index}
+      key={`${image.id}-image`}
+      moveImage={moveImage}
+      onDelete={onDelete}
+    />
+  );
   return <section className="file-list">{images.map(renderImage)}</section>;
-};
+}
 
 export default ImageList;

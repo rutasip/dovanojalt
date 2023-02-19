@@ -5,10 +5,10 @@ import Navbars from "./components/nav/Navbars";
 import Home from "./components/Home";
 import Default from "./components/Default";
 import Sell from "./components/sell/Sell";
-import ListingDetail from "./components/listing/ListingDetail";
+// import ListingDetail from "./components/listing/ListingDetail";
 import UserSettings from "./components/users/UserSettings";
 import ProtectedRoute from "./routes/ProtectedRoute";
-import AuthCheckRoute from "./routes/AuthCheckRoute";
+// import AuthCheckRoute from "./routes/AuthCheckRoute";
 import UserContext from "./context/UserContext";
 import MyItems from "./components/users/MyItems";
 import Favorites from "./components/users/Favorites";
@@ -56,6 +56,7 @@ function App() {
                   user: userRes.data,
                   loading: false,
                 });
+                console.log(userRes);
               })
               .catch((error) => {
                 console.error(new Error(error));
@@ -73,40 +74,32 @@ function App() {
   }, []);
 
   return (
-    <>
-      <UserContext.Provider value={providerValue}>
-        <Navbars />
-        {globalMsg.message ? (
-          <AlertMsg
-            variant={globalMsg.variant}
-            message={globalMsg.message}
-            clearError={() => {
-              setGlobalMsg({ message: undefined, variant: undefined });
-            }}
-          />
-        ) : null}
-        <Routes>
-          <ProtectedRoute exact path="/sell" component={Sell} />
-          <ProtectedRoute exact path="/messages" component={Messages} />
-          <Route exact path="/user/:username" component={Seller} />
-          <AuthCheckRoute exact path="/detail/:id" component={ListingDetail} />
-          <ProtectedRoute
-            exact
-            path="/detail/:id/edit"
-            component={EditListing}
-          />
-          <ProtectedRoute
-            exact
-            path="/users/settings"
-            component={UserSettings}
-          />
-          <ProtectedRoute exact path="/users/myitems" component={MyItems} />
-          <ProtectedRoute exact path="/users/favorites" component={Favorites} />
-          <AuthCheckRoute exact path="/:location?/:category?/:text?" component={Home}/>
-          <Route component={Default} />
-        </Routes>
-      </UserContext.Provider>
-    </>
+    <UserContext.Provider value={providerValue}>
+      <Navbars />
+      {globalMsg.message ? (
+        <AlertMsg
+          variant={globalMsg.variant}
+          message={globalMsg.message}
+          clearError={() => {
+            setGlobalMsg({ message: undefined, variant: undefined });
+          }}
+        />
+      ) : null}
+      <Routes>
+        <Route element={<ProtectedRoute isAllowed={!!userData} />}>
+          <Route exact path="/sell" element={<Sell />} />
+          <Route exact path="/messages" element={<Messages />} />
+          <Route exact path="/detail/:id/edit" element={<EditListing />} />
+          <Route exact path="/users/settings" element={<UserSettings />} />
+          <Route exact path="/users/myitems" element={<MyItems />} />
+          <Route exact path="/users/favorites" element={<Favorites />} />
+          <Route exact path="/:location?/:category?/:text?" element={<Home />} />
+        </Route>
+        <Route exact path="/user/:username" component={Seller} />
+        {/* <AuthCheckRoute exact path="/detail/:id" component={ListingDetail} /> */}
+        <Route component={Default} />
+      </Routes>
+    </UserContext.Provider>
   );
 }
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { Spinner } from "react-bootstrap";
 
-const LoadingSpinner = ({ className }) => {
+function LoadingSpinner({ className }) {
   return (
     <Spinner
       animation="border"

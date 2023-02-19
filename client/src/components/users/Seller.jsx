@@ -7,7 +7,7 @@ import Listing from "../listing/Listing";
 import Default from "../Default";
 import AlertMsg from "../shared/AlertMsg";
 
-const Seller = (props) => {
+function Seller(props) {
   const {
     match: {
       params: { username },

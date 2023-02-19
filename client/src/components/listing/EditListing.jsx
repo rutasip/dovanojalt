@@ -21,7 +21,13 @@ import LoadingSpinner from "../shared/LoadingSpinner";
 import UserContext from "../../context/UserContext";
 import AlertMsg from "../shared/AlertMsg";
 
-const EditListing = (props) => {
+function EditListing(props) {
+  const {
+    match: {
+      params: { id },
+    },
+  } = props;
+
   const { setGlobalMsg } = useContext(UserContext);
 
   const navigate = useNavigate();
@@ -33,7 +39,7 @@ const EditListing = (props) => {
   const [condition, setCondition] = useState();
   const [images, setImages] = useState([]);
   const [files, setFiles] = useState([]);
-  
+
   const [loading, setLoading] = useState(true);
 
   const [message, setMessage] = useState();
@@ -43,9 +49,7 @@ const EditListing = (props) => {
 
   useEffect(() => {
     const getListing = () => {
-      Axios.get(
-        `/api/listings/listings-by-id?id=${props.match.params.id}&type=single`
-      )
+      Axios.get(`/api/listings/listings-by-id?id=${id}&type=single`)
         .then((res) => {
           setTitle(res.data[0].title);
           setLocation(res.data[0].location);
@@ -72,7 +76,7 @@ const EditListing = (props) => {
     };
 
     getListing();
-  }, [props.match.params.id]);
+  }, [id]);
 
   const resetForm = () => {
     setGlobalMsg({
@@ -174,15 +178,11 @@ const EditListing = (props) => {
         condition,
       };
 
-      Axios.post(
-        `/api/listings/update/${props.match.params.id}`,
-        updatedListing,
-        {
-          headers: {
-            "x-auth-token": localStorage.getItem("auth-token"),
-          },
-        }
-      )
+      Axios.post(`/api/listings/update/${id}`, updatedListing, {
+        headers: {
+          "x-auth-token": localStorage.getItem("auth-token"),
+        },
+      })
         .then(() => {
           resetForm();
         })
@@ -200,15 +200,11 @@ const EditListing = (props) => {
         condition,
       };
 
-      Axios.post(
-        `/api/listings/update/${props.match.params.id}`,
-        updatedListing,
-        {
-          headers: {
-            "x-auth-token": localStorage.getItem("auth-token"),
-          },
-        }
-      )
+      Axios.post(`/api/listings/update/${id}`, updatedListing, {
+        headers: {
+          "x-auth-token": localStorage.getItem("auth-token"),
+        },
+      })
         .then(() => {
           const formData = new FormData();
 
@@ -230,9 +226,9 @@ const EditListing = (props) => {
           });
 
           return Axios.post(
-            `/api/listings/update-images/?id=${
-              props.match.params.id
-            }&order=${order.join(",")}&filenames=${filenames.join(",")}`,
+            `/api/listings/update-images/?id=${id}&order=${order.join(
+              ","
+            )}&filenames=${filenames.join(",")}`,
             formData,
             {
               headers: {
@@ -337,7 +333,7 @@ const EditListing = (props) => {
               setCondition(e.target.value);
             }}
           >
-            <option></option>
+            <option>Pasirinkti</option>
             <option>Nauja</option>
             <option>Naudota</option>
           </Form.Control>
@@ -365,6 +361,6 @@ const EditListing = (props) => {
       </Form>
     </Container>
   );
-};
+}
 
 export default EditListing;

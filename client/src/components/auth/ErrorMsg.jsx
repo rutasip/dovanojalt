@@ -1,7 +1,7 @@
 import React from "react";
 import { Alert } from "react-bootstrap";
 
-const ErrorMsg = ({ clearError, message }) => {
+function ErrorMsg({ clearError, message }) {
   return (
     <Alert
       variant="danger"

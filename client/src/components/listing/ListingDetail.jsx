@@ -16,7 +16,7 @@ import Default from "../Default";
 import MessageModal from "./MessageModal";
 import { isDefined, isNullable } from "../../utils/null-checks";
 
-const ListingDetail = (props) => {
+function ListingDetail(props) {
   const {
     match: {
       params: { id },

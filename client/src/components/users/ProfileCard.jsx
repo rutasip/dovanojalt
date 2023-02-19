@@ -4,7 +4,7 @@ import "moment/locale/lt";
 import { Link } from "react-router-dom";
 import { Row, Col, Container, Image, Button } from "react-bootstrap";
 
-const ProfileCard = ({ writer, hideEditButton }) => {
+function ProfileCard({ writer, hideEditButton }) {
   moment.locale("lt");
   
   return (

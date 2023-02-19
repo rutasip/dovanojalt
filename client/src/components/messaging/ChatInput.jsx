@@ -1,7 +1,7 @@
 import React from "react";
 import { InputGroup, Button, FormControl } from "react-bootstrap";
 
-const ChatInput = ({ chatMessage, setChatMessage, onChatSubmit }) => {
+function ChatInput({ chatMessage, setChatMessage, onChatSubmit }) {
   return (
     <InputGroup className="mt-4">
       <FormControl

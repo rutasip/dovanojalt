@@ -6,7 +6,7 @@ import LoadingSpinner from "../shared/LoadingSpinner";
 import Listing from "../listing/Listing";
 import AlertMsg from "../shared/AlertMsg";
 
-const MyItems = () => {
+function MyItems() {
   const { userData } = useContext(UserContext);
   const [listings, setListings] = useState();
   const [loading, setLoading] = useState(true);

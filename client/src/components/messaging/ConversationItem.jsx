@@ -2,7 +2,7 @@ import React from "react";
 import moment from "moment";
 import { Image } from "react-bootstrap";
 
-const ConversationItem = ({ conversation }) => {
+function ConversationItem({ conversation }) {
   return (
     <li className="media my-2">
       <Image

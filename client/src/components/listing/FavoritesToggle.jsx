@@ -4,7 +4,7 @@ import UserContext from "../../context/UserContext";
 import useIsMount from "../../hooks/useIsMount";
 import { isDefined, isNullable } from "../../utils/null-checks";
 
-const FavoritesToggle = ({ id, size, includeText }) => {
+function FavoritesToggle({ id, size, includeText }) {
   const { userData, setGlobalMsg } = useContext(UserContext);
 
   const decideChecked = () => {
@@ -55,7 +55,7 @@ const FavoritesToggle = ({ id, size, includeText }) => {
         name="cb"
         id="cb"
       />
-      <label for="cb" style={{ cursor: "pointer" }}>
+      <label htmlFor="cb" style={{ cursor: "pointer" }}>
         {checked ? (
           <>
             <svg
@@ -67,7 +67,7 @@ const FavoritesToggle = ({ id, size, includeText }) => {
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                fill-rule="evenodd"
+                fillRule="evenodd"
                 d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"
               />
             </svg>
@@ -95,6 +95,6 @@ const FavoritesToggle = ({ id, size, includeText }) => {
       </label>
     </div>
   );
-};
+}
 
 export default FavoritesToggle;

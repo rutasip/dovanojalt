@@ -5,16 +5,7 @@ import moment from "moment";
 import FavoritesToggle from "./FavoritesToggle";
 import cities from "../../data/cities";
 
-const Listing = ({
-  title,
-  date,
-  desc,
-  location,
-  image,
-  id,
-  writer,
-  avatar,
-}) => {
+function Listing({ title, date, desc, location, image, id }) {
   moment.locale("lt");
 
   const src =
@@ -34,6 +25,7 @@ const Listing = ({
             alt={title}
           />
           <div
+            role="presentation"
             className="bg-white shadow-sm"
             style={{
               position: "absolute",
@@ -42,6 +34,7 @@ const Listing = ({
               borderTopRightRadius: "var(--bs-border-radius)",
             }}
             onClick={(evt) => evt.stopPropagation()}
+            onKeyDown={(evt) => evt.stopPropagation()}
           >
             <FavoritesToggle id={id} size="26px" />
           </div>
@@ -56,7 +49,7 @@ const Listing = ({
           className="description text-secondary mb-3"
           style={{ lineHeight: "1.625" }}
         >
-          {desc ? desc : "Nėra aprašymo"}
+          {desc && "Nėra aprašymo"}
         </p>
       </Link>
       <div className="d-flex justify-content-between border-top pt-2">
@@ -66,12 +59,12 @@ const Listing = ({
         >
           įkelta {moment(date).fromNow()}
         </p>
-        <span class="badge text-bg-secondary shadow-sm">
+        <span className="badge text-bg-secondary shadow-sm">
           {locationLabel.label}
         </span>
       </div>
     </div>
   );
-};
+}
 
 export default Listing;

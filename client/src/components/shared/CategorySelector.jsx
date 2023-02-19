@@ -4,13 +4,13 @@ import makeAnimated from "react-select/animated";
 import categories from "../../data/categories";
 import { isDefined } from "../../utils/null-checks";
 
-const CategorySelector = ({
+function CategorySelector({
   onChange,
   className,
   isClearable,
   isMulti,
   defaultValue,
-}) => {
+}) {
   const animatedComponents = makeAnimated();
 
   const groupStyles = {
@@ -65,6 +65,6 @@ const CategorySelector = ({
       formatGroupLabel={formatGroupLabel}
     />
   );
-};
+}
 
 export default CategorySelector;

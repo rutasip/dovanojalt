@@ -14,7 +14,7 @@ import LocationSelector from "../shared/LocationSelector";
 import CategorySelector from "../shared/CategorySelector";
 import AlertMsg from "../shared/AlertMsg";
 
-const Sell = () => {
+function Sell() {
   const { userData, setGlobalMsg } = useContext(UserContext);
 
   const navigate = useNavigate();
@@ -242,7 +242,7 @@ const Sell = () => {
                   setCondition(e.target.value);
                 }}
               >
-                <option></option>
+                <option>Pasirinkti</option>
                 <option>Nauja</option>
                 <option>Naudota</option>
               </Form.Control>

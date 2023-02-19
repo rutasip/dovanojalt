@@ -9,13 +9,16 @@ import LocationSelector from "../shared/LocationSelector";
 import CategorySelector from "../shared/CategorySelector";
 import Login from "../auth/Login";
 
-const Navbars = () => {
+function Navbars() {
   const { userData, setUserData } = useContext(UserContext);
   const navigate = useNavigate();
-  const [location, setLocation] = useState("");
-  const [category, setCategory] = useState("");
-  const [text, setText] = useState("");
-
+  // const [location, setLocation] = useState("");
+  // const [category, setCategory] = useState("");
+  // const [text, setText] = useState("");
+  const [setLocation] = useState("");
+  const [setCategory] = useState("");
+  const [setText] = useState("");
+  
   const [showModal, setShowModal] = useState(false);
 
   const logout = () => {
@@ -63,7 +66,7 @@ const Navbars = () => {
           style={{ maxWidth: "1420px" }}
         >
           <Nav.Link as={Link} to="/" className="logo-img-text">
-            <img src={logoImg} alt="logo" height="16"></img>
+            <img src={logoImg} alt="logo" height="16"/>
           </Nav.Link>
 
           <div className="search-bar shadow-sm d-flex">
@@ -84,7 +87,8 @@ const Navbars = () => {
               className="border-0"
             />
             <Link
-              to={`/${location}/${category}/${text}`}
+              // to={`/${location}/${category}/${text}`}
+              to="/"
               variant="light"
               className="d-flex justify-content-center align-items-center border-0 rounded-circle"
               style={{
@@ -104,7 +108,6 @@ const Navbars = () => {
               </svg>
             </Link>
           </div>
-
           <Nav className="d-flex align-items-center">
             {userData.user ? (
               <>

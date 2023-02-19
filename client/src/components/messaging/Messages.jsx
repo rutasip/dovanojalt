@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, { useState, useEffect, useContext } from "react";
 import Axios from "axios";
 import { Container, Row, Tab, Nav, Col, Accordion } from "react-bootstrap";
@@ -6,17 +7,16 @@ import UserContext from "../../context/UserContext";
 import ConversationBox from "./ConversationBox";
 import LoadingSpinner from "../shared/LoadingSpinner";
 
-const groupBy = (arr, property) => {
-  return arr.reduce((acc, curr) => {
+const groupBy = (arr, property) =>
+  arr.reduce((acc, curr) => {
     if (!acc[curr[property]]) {
       acc[curr[property]] = [];
     }
     acc[curr[property]].push(curr);
     return acc;
   }, {});
-};
 
-const Messages = () => {
+function Messages() {
   const { userData } = useContext(UserContext);
   const [buyMessages, setBuyMessages] = useState({});
   const [buyLoading, setBuyLoading] = useState(true);
@@ -95,7 +95,9 @@ const Messages = () => {
               className="justify-content-center message-tabs"
             >
               <Nav.Item>
-                <Nav.Link  eventKey="Mane dominantys skelbimai">Mane dominantys skelbimai</Nav.Link>
+                <Nav.Link eventKey="Mane dominantys skelbimai">
+                  Mane dominantys skelbimai
+                </Nav.Link>
               </Nav.Item>
               <Nav.Item>
                 <Nav.Link eventKey="Mano skelbimai">Mano skelbimai</Nav.Link>
@@ -148,6 +150,6 @@ const Messages = () => {
       </Row>
     </Container>
   );
-};
+}
 
 export default Messages;

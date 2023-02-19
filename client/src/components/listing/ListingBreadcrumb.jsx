@@ -4,7 +4,7 @@ import cities from "../../data/cities";
 import categories from "../../data/categories";
 import { isDefined } from "../../utils/null-checks";
 
-const ListingBreadcrumb = ({ listing }) => {
+function ListingBreadcrumb({ listing }) {
   const location = cities.find((city) => city.value === listing.location);
 
   let found;
