@@ -71,7 +71,7 @@ function Home() {
   return listingData.loading ? (
     <LoadingSpinner className="centered-on-page-spinner" />
   ) : (
-    <Container fluid className="g-0 pb-5 content">
+    <Container fluid className="pb-5 content">
       {message ? (
         <AlertMsg
           message={message}
@@ -82,7 +82,7 @@ function Home() {
         />
       ) : null}
 
-      <div id="feed" className="px-3">
+      <div id="feed">
         {listingData.listings.map((listing) => (
           <Listing
             title={listing.title}

@@ -3,7 +3,7 @@ import Axios from "axios";
 import moment from "moment";
 import "moment/locale/lt";
 import { Container, Row, Col, Button } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate  } from "react-router-dom";
 import { socket } from "../../services/socket";
 import ListingImageCarousel from "./ListingImageCarousel";
 import ListingUserInfo from "./ListingUserInfo";
@@ -22,6 +22,10 @@ function ListingDetail(props) {
       params: { id },
     },
   } = props;
+
+  // const [searchParams] = useSearchParams();
+
+  // console.log(searchParams.id);
 
   const { userData, setGlobalMsg } = useContext(UserContext);
 

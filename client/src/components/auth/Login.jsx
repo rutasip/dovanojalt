@@ -20,6 +20,7 @@ function Login(props) {
   const [signupPassword, setSignupPassword] = useState();
   const [signupPasswordCheck, setSignupPasswordCheck] = useState();
   const [signupLocation, setSignupLocation] = useState();
+  const [setShowModal] = useState();
 
   const { setUserData } = useContext(UserContext);
   const navigate = useNavigate();
@@ -38,7 +39,8 @@ function Login(props) {
       document
         .getElementsByClassName("modal-backdrop")[0]
         .classList.remove("show");
-      document.getElementsByClassName("modal")[0].classList.remove("show");
+      // document.getElementsByClassName("modal")[0].classList.add("d-none");
+      setShowModal(false);
       navigate("/");
     } catch (err) {
       setError(err.response.data.message);
@@ -89,10 +91,10 @@ function Login(props) {
       <Modal.Body className="align-self-center" style={{ width: "440px" }}>
         <div className="d-flex justify-content-center mt-3 mb-4">
           <div className="rounded shadow-md mx-2 py-2 px-3">
-            <img src={facebookImg} alt="logo" width="32"/>
+            <img src={facebookImg} alt="logo" width="32" />
           </div>
           <div className="rounded shadow-md mx-2 py-2 px-3">
-            <img src={googleImg} alt="logo" width="32"/>
+            <img src={googleImg} alt="logo" width="32" />
           </div>
         </div>
         {isLogin ? (

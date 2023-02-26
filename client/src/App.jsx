@@ -85,17 +85,63 @@ function App() {
         />
       ) : null}
       <Routes>
-        <Route element={<ProtectedRoute isAllowed={!!userData} />}>
-          <Route exact path="/sell" element={<Sell />} />
-          <Route exact path="/messages" element={<Messages />} />
-          <Route exact path="/detail/:id/edit" element={<EditListing />} />
-          <Route exact path="/users/settings" element={<UserSettings />} />
-          <Route exact path="/users/myitems" element={<MyItems />} />
-          <Route exact path="/users/favorites" element={<Favorites />} />
-        </Route>
-        <Route exact path="/user/:username" component={Seller} />
         <Route exact path="/" element={<Home />} />
-        <Route exact path="/detail/:id" element={<ListingDetail />} />
+        <Route
+          exact
+          path="/sell"
+          element={
+            <ProtectedRoute>
+              <Sell />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          exact
+          path="/messages"
+          element={
+            <ProtectedRoute>
+              <Messages />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          exact
+          path="/detail/:id/edit"
+          element={
+            <ProtectedRoute>
+              <EditListing />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          exact
+          path="/users/settings"
+          element={
+            <ProtectedRoute>
+              <UserSettings />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          exact
+          path="/users/myitems"
+          element={
+            <ProtectedRoute>
+              <MyItems />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          exact
+          path="/users/favorites"
+          element={
+            <ProtectedRoute>
+              <Favorites />
+            </ProtectedRoute>
+          }
+        />
+        <Route exact path="/user/:username" component={<Seller />} />
+        <Route exact path="/detail?id=:id" element={<ListingDetail />} />
         <Route component={Default} />
       </Routes>
     </UserContext.Provider>

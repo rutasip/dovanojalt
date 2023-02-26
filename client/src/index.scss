@@ -16,6 +16,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+p {
+  color: #344767;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
@@ -260,7 +264,7 @@ main > .container {
 .search-bar {
   border-radius: 1rem;
   background-color: $search-field-gray;
-  max-width: 544px;
+  max-width: 560px;
 
   .location-selector,
   .category-selector {
@@ -408,7 +412,7 @@ main > .container {
 }
 
 .select__placeholder {
-  color: #212529;
+  margin-top: 1px;
 }
 
 #signupForm {
@@ -466,31 +470,18 @@ input[type="checkbox"]:checked + label {
   display: none;
 }
 
-.listing-cover-photo {
-  position: relative;
-}
-
-.listing-cover-photo::after {
-  content: "";
-  display: block;
-  padding-bottom: 60%;
-}
-
 .listing-cover-photo img {
-  position: absolute;
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-
-.text-dark {
-  color: #344767 !important;
+  aspect-ratio: 1 / 1;
 }
 
 #feed {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  grid-gap: 16px;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
 }
 
 .title {
@@ -499,6 +490,8 @@ input[type="checkbox"]:checked + label {
   display: -webkit-box;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
+  line-height: 20px;
+  font-weight: 500;
 }
 
 .description {
@@ -511,7 +504,7 @@ input[type="checkbox"]:checked + label {
 
 .content {
   padding-top: 76px;
-  max-width: 1420px;
+  max-width: 1260px;
 }
 
 #create-listing-form {

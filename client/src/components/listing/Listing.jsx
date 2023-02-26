@@ -1,11 +1,11 @@
 import React from "react";
-import { Image } from "react-bootstrap";
+import { Col, Image, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import moment from "moment";
-import FavoritesToggle from "./FavoritesToggle";
+// import FavoritesToggle from "./FavoritesToggle";
 import cities from "../../data/cities";
 
-function Listing({ title, date, desc, location, image, id }) {
+function Listing({ title, desc, date, location, image, id }) {
   moment.locale("lt");
 
   const src =
@@ -16,53 +16,42 @@ function Listing({ title, date, desc, location, image, id }) {
   const locationLabel = cities.find((city) => city.value === location);
 
   return (
-    <div className="shadow-sm rounded bg-white p-2 feed-item d-flex flex-column justify-content-between">
-      <Link to={`/detail/${id}`} className="text-decoration-none">
-        <div className="listing-cover-photo">
-          <Image
-            src={src}
-            className="listing-img rounded shadow-sm"
-            alt={title}
-          />
-          <div
-            role="presentation"
-            className="bg-white shadow-sm"
-            style={{
-              position: "absolute",
-              right: 0,
-              borderBottomLeftRadius: "var(--bs-border-radius)",
-              borderTopRightRadius: "var(--bs-border-radius)",
-            }}
-            onClick={(evt) => evt.stopPropagation()}
-            onKeyDown={(evt) => evt.stopPropagation()}
-          >
-            <FavoritesToggle id={id} size="26px" />
-          </div>
-        </div>
-        <p
-          className="title text-dark mt-3 mb-2"
-          style={{ fontSize: "20px", fontWeight: "600" }}
-        >
-          {title}
-        </p>
-        <p
-          className="description text-secondary mb-3"
-          style={{ lineHeight: "1.625" }}
-        >
-          {desc && "Nėra aprašymo"}
-        </p>
+    <div className="d-flex flex-column justify-content-between bg-white rounded shadow-sm p-2 feed-item">
+      <Link to={`/detail/${id}`} className="d-flex text-decoration-none">
+        <Row>
+          <Col xs={3} className="listing-cover-photo">
+            <Image
+              src={src}
+              className="rounded shadow-sm listing-img"
+              alt={title}
+            />
+            <div
+              role="presentation"
+              className="shadow-sm"
+              style={{
+                position: "absolute",
+                right: 0,
+                borderBottomLeftRadius: "var(--bs-border-radius)",
+                borderTopRightRadius: "var(--bs-border-radius)",
+                backgroundColor: "rgba(0, 0, 0, 0.2)",
+              }}
+              onClick={(evt) => evt.stopPropagation()}
+              onKeyDown={(evt) => evt.stopPropagation()}
+            >
+              {/* <FavoritesToggle id={id} size="20px" /> */}
+            </div>
+          </Col>
+          <Col className="d-flex flex-column justify-content-between">
+            <div>
+              <p className="title">{title}</p>
+              <p className="description">{desc  || "aprašymas"}</p>
+            </div>
+            <small className="text-secondary mb-0">
+              {moment(date).fromNow()} · {locationLabel.label}
+            </small>
+          </Col>
+        </Row>
       </Link>
-      <div className="d-flex justify-content-between border-top pt-2">
-        <p
-          className="mb-0 text-secondary align-self-end"
-          style={{ fontSize: "12.4px" }}
-        >
-          įkelta {moment(date).fromNow()}
-        </p>
-        <span className="badge text-bg-secondary shadow-sm">
-          {locationLabel.label}
-        </span>
-      </div>
     </div>
   );
 }

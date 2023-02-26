@@ -1,13 +1,16 @@
 import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Button, Form, Navbar, Nav } from "react-bootstrap";
+import { Button, Form, Navbar, Nav, Modal } from "react-bootstrap";
+import Axios from "axios";
+import ErrorMsg from "../auth/ErrorMsg";
 import { isNullable } from "../../utils/null-checks";
 import UserContext from "../../context/UserContext";
 import Avatar from "./Avatar";
 import logoImg from "../../assets/logoipsum-280.svg";
+import facebookImg from "../../assets/icons8-facebook.svg";
+import googleImg from "../../assets/icons8-google.svg";
 import LocationSelector from "../shared/LocationSelector";
 import CategorySelector from "../shared/CategorySelector";
-import Login from "../auth/Login";
 
 function Navbars() {
   const { userData, setUserData } = useContext(UserContext);
@@ -18,8 +21,22 @@ function Navbars() {
   const [setLocation] = useState("");
   const [setCategory] = useState("");
   const [setText] = useState("");
-  
-  const [showModal, setShowModal] = useState(false);
+
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [error, setError] = useState();
+  const [isLogin, setIsLogin] = useState(true);
+
+  const [signupEmail, setSignupEmail] = useState();
+  const [signupUsername, setSignupUsername] = useState();
+  const [signupPassword, setSignupPassword] = useState();
+  const [signupPasswordCheck, setSignupPasswordCheck] = useState();
+  const [signupLocation, setSignupLocation] = useState();
+
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   const logout = () => {
     setUserData({
@@ -57,16 +74,230 @@ function Navbars() {
     setText(e);
   };
 
+  const submit = async (e) => {
+    e.preventDefault();
+    try {
+      const loginUser = { email, password };
+
+      const loginRes = await Axios.post("/api/users/prisijungti", loginUser);
+      setUserData({
+        token: loginRes.data.token,
+        user: loginRes.data.user,
+      });
+      localStorage.setItem("auth-token", loginRes.data.token);
+      // document
+      //   .getElementsByClassName("modal-backdrop")[0]
+      //   .classList.remove("show");
+      // document.getElementsByClassName("modal")[0].classList.add("d-none");
+      setShow(false);
+      navigate("/");
+    } catch (err) {
+      setError(err.response.data.message);
+    }
+  };
+
+  const signupSubmit = (e) => {
+    e.preventDefault();
+
+    const newUser = {
+      username: signupUsername,
+      email: signupEmail,
+      password: signupPassword,
+      passwordCheck: signupPasswordCheck,
+      location: signupLocation,
+    };
+
+    Axios.post("/api/users/register", newUser)
+      .then(() => {
+        Axios.post("/api/users/prisijungti", {
+          email: signupEmail,
+          password: signupPassword,
+        });
+      })
+      .then((res) => {
+        setUserData({ token: res.data.token, user: res.data.user });
+        localStorage.setItem("auth-token", res.data.token);
+        document
+          .getElementsByClassName("modal-backdrop")[0]
+          .classList.remove("show");
+        document.getElementsByClassName("modal")[0].classList.remove("show");
+        navigate("/");
+      })
+      .catch((err) => {
+        setError(err.response.data.message);
+      });
+  };
+
   return (
     <>
-      <Login show={showModal} onHide={() => setShowModal(false)} />
+      <Modal centered className="d-flex" show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          {isLogin ? (
+            <Modal.Title className="h5">Prisijungti</Modal.Title>
+          ) : (
+            <Modal.Title className="h5">Registruotis</Modal.Title>
+          )}
+        </Modal.Header>
+        <Modal.Body className="align-self-center" style={{ width: "440px" }}>
+          <div className="d-flex justify-content-center mt-3 mb-4">
+            <div className="rounded shadow-md mx-2 py-2 px-3">
+              <img src={facebookImg} alt="logo" width="32" />
+            </div>
+            <div className="rounded shadow-md mx-2 py-2 px-3">
+              <img src={googleImg} alt="logo" width="32" />
+            </div>
+          </div>
+          {isLogin ? (
+            <>
+              <Form onSubmit={submit}>
+                <p
+                  className="text-border text-secondary text-center mb-4"
+                  style={{ fontSize: "14px" }}
+                >
+                  arba
+                </p>
+                {error && (
+                  <ErrorMsg
+                    message={error}
+                    clearError={() => {
+                      setError(undefined);
+                    }}
+                  />
+                )}
+                <Form.Control
+                  type="email"
+                  placeholder="El. paštas"
+                  className="font-size-medium mb-3"
+                  size="lg"
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
+                  autoFocus
+                />
+                <Form.Control
+                  type="password"
+                  placeholder="Slaptažodis"
+                  className="font-size-medium mb-3"
+                  size="lg"
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
+                />
+
+                <Button
+                  variant="primary"
+                  className="btn font-weight-bolder shadow-sm"
+                  type="submit"
+                  onClick={submit}
+                  block
+                  style={{ width: "100%" }}
+                >
+                  Prisijungti
+                </Button>
+              </Form>
+              <p
+                className="text-secondary text-center mt-4 mb-2"
+                style={{ fontSize: "14px" }}
+              >
+                dar neturi paskyros?
+              </p>
+            </>
+          ) : (
+            <>
+              <Form id="signupForm" onSubmit={submit}>
+                <p
+                  className="text-border text-secondary text-center mb-4"
+                  style={{ fontSize: "14px" }}
+                >
+                  arba
+                </p>
+                {error && (
+                  <ErrorMsg
+                    message={error}
+                    clearError={() => {
+                      setError(undefined);
+                    }}
+                  />
+                )}
+                <Form.Control
+                  type="text"
+                  placeholder="Slapyvardis"
+                  className="font-size-medium mb-3"
+                  size="lg"
+                  onChange={(e) => {
+                    setSignupUsername(e.target.value);
+                  }}
+                  autoFocus
+                />
+                <Form.Control
+                  type="email"
+                  placeholder="El. paštas"
+                  className="font-size-medium mb-3"
+                  size="lg"
+                  onChange={(e) => {
+                    setSignupEmail(e.target.value);
+                  }}
+                />
+                <Form.Control
+                  type="password"
+                  placeholder="Slaptažodis"
+                  className="font-size-medium mb-3"
+                  size="lg"
+                  onChange={(e) => {
+                    setSignupPassword(e.target.value);
+                  }}
+                />
+                <Form.Control
+                  type="password"
+                  placeholder="Pakartoti slaptažodį"
+                  className="font-size-medium mb-3"
+                  size="lg"
+                  onChange={(e) => {
+                    setSignupPasswordCheck(e.target.value);
+                  }}
+                />
+                <Form.Group className="font-size-medium mb-3">
+                  <LocationSelector
+                    onChange={(e) => {
+                      setSignupLocation(e.value);
+                    }}
+                  />
+                </Form.Group>
+                <Button
+                  variant="primary"
+                  className="btn font-weight-bolder shadow-sm"
+                  type="submit"
+                  onClick={signupSubmit}
+                  style={{ width: "100%" }}
+                >
+                  Registruotis
+                </Button>
+              </Form>
+              <p
+                className="text-secondary text-center mt-4 mb-2"
+                style={{ fontSize: "14px" }}
+              >
+                jau turi paskyrą?
+              </p>
+            </>
+          )}
+          <Button
+            variant="dark"
+            className="btn font-weight-bolder shadow-sm"
+            style={{ width: "100%" }}
+            onClick={() => (isLogin ? setIsLogin(false) : setIsLogin(true))}
+          >
+            {isLogin ? "Registruotis" : "Prisijungti"}
+          </Button>
+        </Modal.Body>
+      </Modal>
       <header id="top-navbar" className="border-bottom bg-white">
         <Navbar
           className="justify-content-between px-3 mx-auto"
-          style={{ maxWidth: "1420px" }}
+          style={{ maxWidth: "1260px" }}
         >
           <Nav.Link as={Link} to="/" className="logo-img-text">
-            <img src={logoImg} alt="logo" height="16"/>
+            <img src={logoImg} alt="logo" height="16" />
           </Nav.Link>
 
           <div className="search-bar shadow-sm d-flex">
@@ -132,7 +363,11 @@ function Navbars() {
                 <Nav.Link as={Link} to="/users/favorites">
                   <Button
                     className="btn border-none rounded-circle p-0 mx-1"
-                    style={{ marginRight: "12px", width: "35px", height: "35px" }}
+                    style={{
+                      marginRight: "12px",
+                      width: "35px",
+                      height: "35px",
+                    }}
                     variant="outline-light"
                   >
                     <svg
@@ -165,7 +400,7 @@ function Navbars() {
                   <Button
                     className="btn font-weight-bolder shadow-sm me-3"
                     variant="primary"
-                    onClick={() => setShowModal(true)}
+                    onClick={handleShow}
                   >
                     Įkelti skelbimą
                   </Button>
@@ -174,7 +409,7 @@ function Navbars() {
                   <Button
                     className="btn font-weight-bolder shadow-sm"
                     variant="outline-light"
-                    onClick={() => setShowModal(true)}
+                    onClick={handleShow}
                   >
                     Registruotis | Prisijungti
                   </Button>
@@ -186,6 +421,6 @@ function Navbars() {
       </header>
     </>
   );
-};
+}
 
 export default Navbars;
