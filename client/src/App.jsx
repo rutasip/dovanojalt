@@ -86,6 +86,7 @@ function App() {
       ) : null}
       <Routes>
         <Route exact path="/" element={<Home />} />
+        <Route path="/detail/:id" element={<ListingDetail />} />
         <Route
           exact
           path="/sell"
@@ -141,7 +142,6 @@ function App() {
           }
         />
         <Route exact path="/user/:username" component={<Seller />} />
-        <Route exact path="/detail?id=:id" element={<ListingDetail />} />
         <Route component={Default} />
       </Routes>
     </UserContext.Provider>

@@ -5,7 +5,6 @@ const multer = require("multer");
 const fs = require("fs");
 const auth = require("../middleware/auth");
 const Listing = require("../models/listing.model");
-const User = require("../models/user.model");
 const { isNullable, isDefined } = require("../utils/null-check");
 
 const storage = multer.diskStorage({
@@ -74,10 +73,7 @@ router.get("/listings-by-user", (req, res) => {
   Listing.find({ writer: { $in: _id } })
     .populate("writer")
     .sort("-date")
-    .exec((err, listing) => {
-      if (err) return res.status(400).send(err);
-      return res.status(200).send(listing);
-    });
+    .then((listing) => res.status(200).send(listing)).catch((err) => res.status(400).send(err));
 });
 
 router.get("/listings-by-id", (req, res) => {
@@ -93,10 +89,7 @@ router.get("/listings-by-id", (req, res) => {
   Listing.find({ _id: { $in: id } })
     .populate("writer")
     .sort("-date")
-    .exec((err, listing) => {
-      if (err) return res.status(400).send(err);
-      return res.status(200).send(listing);
-    });
+    .then((listing) => res.status(200).send(listing)).catch((err) => res.status(400).send(err));
 });
 
 router.post("/add/images", upload.array("images", 6), (req, res) => {
@@ -116,12 +109,8 @@ router.post("/add/images", upload.array("images", 6), (req, res) => {
   Listing.findByIdAndUpdate(req.header("listing-id"), {
     image: uploads,
   })
-    .then(() => {
-      return res.json("Nuotraukos įrašytos");
-    })
-    .catch((err) => {
-      return res.status(500).json({ error: err.message });
-    });
+    .then(() => res.json("Nuotraukos įrašytos"))
+    .catch((err) => res.status(500).json({ error: err.message }));
 
   return undefined;
 });
@@ -282,9 +271,7 @@ router.post("/update/:id", auth, (req, res) => {
         .then(() => res.json("Skelbimas atnaujintas."))
         .catch((err) => res.status(400).json(`Error: ${err}`));
     })
-    .catch((err) => {
-      return res.status(400).json(`Error: ${err}`);
-    });
+    .catch((err) => res.status(400).json(`Error: ${err}`));
 });
 
 module.exports = router;

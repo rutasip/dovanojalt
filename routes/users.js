@@ -49,27 +49,17 @@ router.post("/add-to-favorites", auth, (req, res) => {
         User.findByIdAndUpdate(req.user, {
           $pull: { favorites: id },
         })
-          .then(() => {
-            return res.json({ msg: "Ištrinta iš įsimintų skelbimų" });
-          })
-          .catch((err) => {
-            return res.status(500).json({ error: err.message });
-          });
+          .then(() => res.json({ msg: "Ištrinta iš įsimintų skelbimų" }))
+          .catch((err) => res.status(500).json({ error: err.message }));
       } else {
         User.findByIdAndUpdate(req.user, {
           $push: { favorites: id },
         })
-          .then(() => {
-            return res.json({ msg: "Pridėta prie įsimintų skelbimų" });
-          })
-          .catch((err) => {
-            return res.status(500).json({ error: err.message });
-          });
+          .then(() => res.json({ msg: "Pridėta prie įsimintų skelbimų" }))
+          .catch((err) => res.status(500).json({ error: err.message }));
       }
     })
-    .catch((err) => {
-      return res.status(500).json({ error: err.message });
-    });
+    .catch((err) => res.status(500).json({ error: err.message }));
 });
 
 router.post("/upload-image", auth, upload.single("file"), (req, res) => {
@@ -83,12 +73,8 @@ router.post("/upload-image", auth, upload.single("file"), (req, res) => {
       filePath: `uploads/${req.file.filename}`,
     },
   })
-    .then(() => {
-      return res.json("Paskyros nuotrauka atnaujinta");
-    })
-    .catch((err) => {
-      return res.status(500).json({ error: err.message });
-    });
+    .then(() => res.json("Paskyros nuotrauka atnaujinta"))
+    .catch((err) => res.status(500).json({ error: err.message }));
 
   return undefined;
 });
@@ -110,12 +96,8 @@ router.post("/change-info", auth, async (req, res) => {
           location,
           password: passwordHash,
         })
-          .then(() => {
-            return res.json("Informacija atnaujinta");
-          })
-          .catch((err) => {
-            return res.status(500).json({ error: err.message });
-          });
+          .then(() => res.json("Informacija atnaujinta"))
+          .catch((err) => res.status(500).json({ error: err.message }));
       } else {
         return res
           .status(400)
@@ -286,9 +268,7 @@ router.post("/token-is-valid", (req, res) => {
 
       return res.json(true);
     })
-    .catch((err) => {
-      return res.status(500).json({ error: err.message });
-    });
+    .catch((err) => res.status(500).json({ error: err.message }));
 });
 
 module.exports = router;

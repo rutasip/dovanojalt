@@ -22,11 +22,7 @@ router.get("/buy-messages", auth, (req, res) => {
         .populate("writer")
         .populate("receiver")
         .sort("+date")
-        .exec((err, chatRes) => {
-          if (err) return res.status(400).send(err);
-
-          return res.status(200).send(chatRes);
-        });
+        .then((chatRes) => res.status(200).send(chatRes)).catch((err) => res.status(400).send(err));
     })
     .catch((err) => console.error(err));
 });
@@ -50,11 +46,7 @@ router.get("/sell-messages", auth, (req, res) => {
         .populate("writer")
         .populate("receiver")
         .sort("+date")
-        .exec((err, chatRes) => {
-          if (err) return res.status(400).send(err);
-
-          return res.status(200).send(chatRes);
-        });
+        .then((chatRes) => res.status(200).send(chatRes)).catch((err) => res.status(400).send(err));
     })
     .catch((err) => console.error(err));
 });
